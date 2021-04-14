@@ -1,0 +1,19 @@
+{
+    "exclude": ["node_modules/", "./index.js", "./index.d.ts"],
+    "include": ["src/4anime.ts"],
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "lib": [],
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "strict": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    }
+}
