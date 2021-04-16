@@ -6,11 +6,13 @@ import path from 'path';
 import _ from 'lodash';
 import { Aigle } from 'aigle';
 
+type AnimeStatus = 'Completed' | 'Currently Airing';
+
 export interface SearchResult {
    title: string;
    link: string;
-   year: number;
-   status: string;
+   year: string;
+   status: AnimeStatus;
 }
 
 export interface AnimeData {
@@ -41,14 +43,14 @@ export class FourAnime extends EventEmitter implements $4Anime {
    options?: AnimeOptions;
 
    constructor(options?: AnimeOptions) {
-      super();
+      super({ captureRejections: true });
       this.options = options;
    }
 
    async term(
       s: string,
       cb: (s: Array<SearchResult>) => void
-   ): Promise<Array<SearchResult> | void> {
+   ): Promise<Array<SearchResult> | undefined> {
       let results: Array<SearchResult>;
       try {
          const search = await axios.get('https://4anime.to', {
@@ -56,15 +58,15 @@ export class FourAnime extends EventEmitter implements $4Anime {
             params: { s },
          });
          const { document } = new JSDOM(search.data).window;
-         const _divs: any = Array.from(
+         const _a: any = Array.from(
             document.querySelectorAll('div#headerDIV_95 a'),
-            (div: any) => {
-               const text = div.textContent
+            (a: any) => {
+               const text = a.textContent
                   .trim()
                   .replace(/\/\n/gi, '')
                   .replace(/\/\n/gi, '')
                   .split('\n');
-               text.splice(2, 1, div.querySelector('a').href);
+               text.splice(2, 1, a.href);
                const _r = _.zipObject(
                   ['title', 'year', 'link', 'status'],
                   text
@@ -72,12 +74,19 @@ export class FourAnime extends EventEmitter implements $4Anime {
                return _r;
             }
          );
-         results = _divs;
+         if (_a.length < 1) {
+            throw {
+               name: 'Error',
+               code: 'ANINOTFOUND',
+               message: 'Anime not found',
+            };
+         }
+         results = _a;
          if (cb) {
             cb(results);
-            return;
+         } else {
+            return results;
          }
-         return results;
       } catch (e) {
          if (this.options.catch) {
             throw e;
@@ -107,9 +116,9 @@ export class FourAnime extends EventEmitter implements $4Anime {
          results = href_data;
          if (cb) {
             cb(results);
-            return;
+         } else {
+            return results;
          }
-         return results;
       } catch (e) {
          if (this.options.catch) {
             throw e;
@@ -124,38 +133,50 @@ export class FourAnime extends EventEmitter implements $4Anime {
       href: Array<URL>,
       cb?: (results: Array<AnimeData>) => void
    ): Promise<Array<AnimeData>> {
-      let results: Array<AnimeData>;
+      let results: Array<AnimeData>,
+         qLength: number = 0;
       try {
          const async_handler = async (e: URL) => {
             const _anime = await axios.get(e.href);
-            const { document } = new JSDOM(_anime.data).window;
+            if (qLength === 1) {
+               require('fs').writeFileSync('./index.html', _anime.data);
+            }
+            const { document } = new JSDOM(_anime.data, {
+               url: e.href,
+               runScripts: 'dangerously',
+               resources: 'usable',
+               contentType: 'text/html',
+               includeNodeLocations: true,
+            }).window;
             const ep: number = parseInt(e.pathname.split('-').pop());
             const id: string = e.searchParams.get('id').toString();
             const title: string = Array.from(
                document.querySelectorAll('.singletitletop #titleleft'),
                (t: any) => t.textContent
             ).join(' ');
-            const src: string = document.querySelector(
-               'video#example_video_1_html5_api.vjs-tech'
-            ).src;
-            const filename = path.basename(new URL(src).pathname);
+            const src = document.querySelectorAll('video#example_video_1 source');
+            // const filename = path.basename(src);
+            // console.log(filename)
+            qLength++;
+            this.emit('loaded', qLength, href.length);
             return {
                ep,
                id,
                title,
                src,
-               filename,
+               // filename,
             };
          };
          const anime_data = await Aigle.resolve(href)
             .map(async_handler)
             .sortBy(d => d.ep);
          results = anime_data;
+         console.log('Returning shit');
          if (cb) {
             cb(results);
-            return;
+         } else {
+            return results;
          }
-         return results;
       } catch (e) {
          if (this.options.catch) {
             throw e;
