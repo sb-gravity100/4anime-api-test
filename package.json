@@ -1,6 +1,6 @@
 {
-  "name": "@sb-animedl/4anime-downloader",
-  "version": "0.1.8",
+  "name": "4anime-downloader-api",
+  "version": "0.0.1",
   "main": "dist/4anime.js",
   "repository": {
     "type": "git",
