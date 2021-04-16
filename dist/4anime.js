@@ -13,13 +13,21 @@ var _events = require("events");
 
 var _url = require("url");
 
+var _path = _interopRequireDefault(require("path"));
+
 var _lodash = _interopRequireDefault(require("lodash"));
 
 var _aigle = require("aigle");
 
+var _axiosRetry = _interopRequireDefault(require("axios-retry"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+(0, _axiosRetry.default)(_axios.default, {
+  retries: 3
+});
 
 class FourAnime extends _events.EventEmitter {
   constructor(options) {
@@ -51,6 +59,10 @@ class FourAnime extends _events.EventEmitter {
         text.splice(2, 1, a.href);
 
         const _r = _lodash.default.zipObject(['title', 'year', 'link', 'status'], text);
+
+        if (_r.title.length > 75) {
+          _r.title += '...';
+        }
 
         return _r;
       });
@@ -86,14 +98,29 @@ class FourAnime extends _events.EventEmitter {
     try {
       const anime = await (0, _axios.default)({
         method: 'GET',
-        url: a
+        url: a.link
       });
       const {
         document
       } = new _jsdom.JSDOM(anime.data).window;
       const arr_href = Array.from(document.querySelectorAll('ul.episodes.range.active a'), link => new _url.URL(link.href));
+      const type = document.querySelector('.details .detail a').textContent;
+      const title = document.querySelector('.single-anime-desktop').textContent;
       const href_data = await this.hrefsData(arr_href);
-      results = href_data;
+      const all_data = {
+        title: title,
+        type: type,
+        status: a.status,
+        year: a.year,
+        eps: arr_href.length,
+        data: href_data
+      };
+
+      if (type === 'Movie') {
+        _lodash.default.unset(all_data, 'eps');
+      }
+
+      results = all_data;
 
       if (cb) {
         cb(results);
@@ -118,36 +145,27 @@ class FourAnime extends _events.EventEmitter {
       const async_handler = async e => {
         const _anime = await _axios.default.get(e.href);
 
-        if (qLength === 1) {
-          require('fs').writeFileSync('./index.html', _anime.data);
-        }
-
         const {
           document
-        } = new _jsdom.JSDOM(_anime.data, {
-          url: e.href,
-          runScripts: 'dangerously',
-          resources: 'usable',
-          contentType: 'text/html',
-          includeNodeLocations: true
-        }).window;
-        const ep = parseInt(e.pathname.split('-').pop());
+        } = new _jsdom.JSDOM(_anime.data).window;
+        const ep = parseInt(e.pathname.split('-').pop()) || 1;
         const id = e.searchParams.get('id').toString();
-        const title = Array.from(document.querySelectorAll('.singletitletop #titleleft'), t => t.textContent).join(' ');
-        const src = document.querySelectorAll('video#example_video_1 source');
+        const src = document.querySelector('video#example_video_1 source').src;
+
+        const filename = _path.default.basename(src);
+
         qLength++;
         this.emit('loaded', qLength, href.length);
         return {
           ep,
           id,
-          title,
-          src
+          src,
+          filename
         };
       };
 
-      const anime_data = await _aigle.Aigle.resolve(href).map(async_handler).sortBy(d => d.ep);
+      const anime_data = await _aigle.Aigle.resolve(href).map(async_handler);
       results = anime_data;
-      console.log('Returning shit');
 
       if (cb) {
         cb(results);
