@@ -21,7 +21,12 @@
     "build": "npm-run-all clean transpile type",
     "watch": "npm run clean & babel ./src --out-dir ./dist --no-comments --extensions \".js,.ts\" -w"
   },
-  "keywords": [],
+  "keywords": [
+    "anime",
+    "downloader",
+    "4anime",
+    "node"
+  ],
   "dependencies": {
     "aigle": "^1.14.1",
     "axios": "^0.21.1",
