@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FourAnime = void 0;
+exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -184,4 +184,4 @@ class FourAnime extends _events.EventEmitter {
 
 }
 
-exports.FourAnime = FourAnime;
+exports.default = FourAnime;

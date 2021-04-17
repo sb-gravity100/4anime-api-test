@@ -1,5 +1,5 @@
 {
-    "exclude": ["node_modules/", "./index.js", "./index.d.ts"],
+    "exclude": ["node_modules/", ".dist/index.js", ".dist/index.d.ts"],
     "include": ["src/4anime.ts"],
     "compilerOptions": {
         "target": "es5",
@@ -8,7 +8,7 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "sourceMap": true,
-        "outFile": "./index.js",
+        "outFile": "./dist/index.js",
         "strict": false,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,

@@ -31,7 +31,7 @@ declare module "4anime" {
         term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | void>;
         episodes(a: SearchResult, cb?: (results: AnimeData | void) => void): Promise<AnimeData | void>;
     }
-    export class FourAnime extends EventEmitter implements $4Anime {
+    export default class FourAnime extends EventEmitter implements $4Anime {
         options?: AnimeOptions;
         constructor(options?: AnimeOptions);
         term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | undefined>;

@@ -1,7 +1,7 @@
 {
   "name": "node-4anime-scraper",
   "version": "1.0.1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sb-gravity100/4anime-api-test.git"
@@ -15,11 +15,11 @@
   "homepage": "https://github.com/sb-gravity100/4anime-api-test#readme",
   "scripts": {
     "test": "jest",
-    "transpile": "babel ./src --out-dir ./dist --no-comments --extensions \".js,.ts\"",
+    "transpile": "babel ./src --out-file ./dist/index.js --no-comments --extensions \".js,.ts\"",
     "clean": "rimraf ./dist",
     "type": "tsc",
     "build": "npm-run-all clean transpile type",
-    "watch": "babel ./src --out-dir ./dist --no-comments --extensions \".js,.ts\" -w"
+    "watch": "babel ./src --out-file ./dist/index.js --no-comments --extensions \".js,.ts\" -w"
   },
   "keywords": [
     "anime",
