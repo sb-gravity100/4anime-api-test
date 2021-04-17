@@ -10,6 +10,9 @@ Fetch [](4anime.to) videos and data via **Node**.
 -  [Search](#search)
    -  [Output](#output)
    -  [Usage](#usage)
+-  [Episodes](#episodes)
+   - [Output](#output-1)
+   - [Usage](#usage-1)
 
 ## Class
 
