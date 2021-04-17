@@ -1,6 +1,6 @@
 {
-  "name": "4anime-downloader-api",
-  "version": "0.1.0",
+  "name": "node-4anime-scraper",
+  "version": "1.0.0",
   "main": "index.js",
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 # 4anime-api-test
 
-AN API for downloading [](4anime.to) videos via __Node__.
+AN API for fetching [](4anime.to) videos and data via __Node__.
 
 # Documentation
 
