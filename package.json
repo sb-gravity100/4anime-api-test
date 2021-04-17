@@ -1,7 +1,7 @@
 {
   "name": "4anime-downloader-api",
   "version": "0.0.1",
-  "main": "dist/4anime.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sb-gravity100/4anime-api-test.git"
@@ -19,7 +19,7 @@
     "clean": "rimraf ./dist",
     "type": "tsc",
     "build": "npm-run-all clean transpile type",
-    "watch": "npm run clean & babel ./src --out-dir ./dist --no-comments --extensions \".js,.ts\" -w"
+    "watch": "babel ./src --out-dir ./dist --no-comments --extensions \".js,.ts\" -w"
   },
   "keywords": [
     "anime",

@@ -1,4 +1,4 @@
-const { FourAnime } = require('./dist/4anime');
+const { FourAnime } = require('4anime');
 
 const Anime = new FourAnime({
    catch: false,
