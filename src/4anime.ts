@@ -53,7 +53,7 @@ export interface $4Anime {
    ): Promise<AnimeData | void>;
 }
 
-export class FourAnime extends EventEmitter implements $4Anime {
+export default class FourAnime extends EventEmitter implements $4Anime {
    options?: AnimeOptions;
 
    constructor(options?: AnimeOptions) {
