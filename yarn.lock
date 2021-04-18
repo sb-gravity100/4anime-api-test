@@ -3785,6 +3785,17 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
+node-4anime-scraper@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/node-4anime-scraper/-/node-4anime-scraper-1.0.2.tgz#becc4af84e80d273bc3d5167cd1591cfc8b3d779"
+  integrity sha512-A5cirDJyuoNB3Cx0Ht+ZlozjMVNHqMnbgVaGvoRM451mrMm+c9SsZe581FbbHQgVZpJJsEBdEPbR3+9AHj/1qA==
+  dependencies:
+    aigle "^1.14.1"
+    axios "^0.21.1"
+    axios-retry "^3.1.9"
+    jsdom "^16.5.3"
+    lodash "^4.17.21"
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"

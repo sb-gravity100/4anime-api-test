@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.FourAnime = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -149,7 +149,7 @@ class FourAnime extends _events.EventEmitter {
           document
         } = new _jsdom.JSDOM(_anime.data).window;
         const ep = parseInt(e.pathname.split('-').pop()) || 1;
-        const id = e.searchParams.get('id').toString();
+        const id = parseInt(e.searchParams.get('id'));
         const src = document.querySelector('video#example_video_1 source').src;
 
         const filename = _path.default.basename(src);
@@ -184,4 +184,4 @@ class FourAnime extends _events.EventEmitter {
 
 }
 
-exports.default = FourAnime;
+exports.FourAnime = FourAnime;

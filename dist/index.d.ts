@@ -13,7 +13,7 @@ declare module "4anime" {
         src: string;
         ep: number;
         filename: string;
-        id: string;
+        id: number;
     }
     export interface AnimeData {
         title?: string;
@@ -31,7 +31,7 @@ declare module "4anime" {
         term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | void>;
         episodes(a: SearchResult, cb?: (results: AnimeData | void) => void): Promise<AnimeData | void>;
     }
-    export default class FourAnime extends EventEmitter implements $4Anime {
+    export class FourAnime extends EventEmitter implements $4Anime {
         options?: AnimeOptions;
         constructor(options?: AnimeOptions);
         term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | undefined>;

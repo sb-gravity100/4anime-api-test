@@ -25,7 +25,7 @@ export interface AnimeEpisode {
    src: string;
    ep: number;
    filename: string;
-   id: string;
+   id: number;
 }
 
 export interface AnimeData {
@@ -53,7 +53,7 @@ export interface $4Anime {
    ): Promise<AnimeData | void>;
 }
 
-export default class FourAnime extends EventEmitter implements $4Anime {
+export class FourAnime extends EventEmitter implements $4Anime {
    options?: AnimeOptions;
 
    constructor(options?: AnimeOptions) {
@@ -172,7 +172,7 @@ export default class FourAnime extends EventEmitter implements $4Anime {
             const _anime = await axios.get(e.href);
             const { document } = new JSDOM(_anime.data).window;
             const ep: number = parseInt(e.pathname.split('-').pop()) || 1;
-            const id: string = e.searchParams.get('id').toString();
+            const id: number = parseInt(e.searchParams.get('id'));
             const src: string = document.querySelector(
                'video#example_video_1 source'
             ).src;

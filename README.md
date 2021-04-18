@@ -19,7 +19,9 @@ Fetch [](4anime.to) videos and data via **Node**.
 `new FourAnimeInstance(options: AnimeOptions)` - starts a 4Anime instance.
 
 ```javascript
-const FourAnimeInstance = require('node-4anime-scraper');
+const { FourAnime } = require('node-4anime-scraper');
+// Or with imports
+// import FourAnime from 'node-4anime-scraper'
 
 const Anime = new FourAnimeInstance({
    catch: false, // Default is `false`
