@@ -4,6 +4,8 @@ Fetch [](4anime.to) videos and data via **Node**.
 
 # Documentation
 
+Learn more [here](https://sb-gravity100.github.io/node-4anime-scraper/)
+
 ## Table of Contents
 
 -  [Class](#class)
