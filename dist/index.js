@@ -29,16 +29,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   retries: 3
 });
 
+/** 
+ * Represents the class for getting links from 4Anime.to.
+ * @class FourAnime - Represents the class for getting links from 4Anime.to.
+ * @extends EventEmitter
+ */
 class FourAnime extends _events.EventEmitter {
+  /**
+   * @private
+   */
+
+  /** 
+   * Creates a new FourAnime instance.
+   * @param {Object} [FourAnimeOptions] - options.
+   * @param {boolean} [FourAnimeOptions.catch] - throw all errors in a catch block if true. Otherwise it emits an error event.
+   * @example
+   * const Anime = new FourAnime({
+   *    catch: false, // default
+   * })
+   */
   constructor(options) {
     super({
       captureRejections: true
     });
 
-    _defineProperty(this, "options", void 0);
+    _defineProperty(this, "catch", void 0);
 
-    this.options = options;
+    this.catch = options.catch || false;
   }
+  /**
+   * Callback for term.
+   * @callback searchCallback
+   * @param {object[] | void} SearchResult
+   */
+
+  /**
+   * Search an anime by a term.
+   * @param {string} s - string to search for.
+   * @param {searchCallback} [cb] - optional callback.
+   * @returns {object[] | void} An array of search results.
+   * @example
+   * Anime.term('jujutsu kaisen', results => {
+   *   // Do something with it...
+   * })
+   */
+
 
   async term(s, cb) {
     let results;
@@ -83,7 +118,7 @@ class FourAnime extends _events.EventEmitter {
         return results;
       }
     } catch (e) {
-      if (this.options.catch) {
+      if (this.catch) {
         throw e;
       } else {
         this.emit('error', e);
@@ -91,6 +126,25 @@ class FourAnime extends _events.EventEmitter {
       }
     }
   }
+  /**
+   * Callback for episodes.
+   * @callback episodesCallback
+   * @param {object | void} AnimeData
+   */
+
+  /**
+   * Get anime data and episode links.
+   * @param {object} a - an object from the search results.
+   * @param {episodesCallback} [cb] - optional callback.
+   * @returns {object[] | void} An array of search results.
+   * @see FourAnime#term
+   * @example
+   * const search = await Anime.term('jujutsu kaisen')
+   * Anime.episodes(search[0], results => {
+   *   // Do something with the results...
+   * })
+   */
+
 
   async episodes(a, cb) {
     let results;
@@ -128,7 +182,7 @@ class FourAnime extends _events.EventEmitter {
         return results;
       }
     } catch (e) {
-      if (this.options.catch) {
+      if (this.catch) {
         throw e;
       } else {
         this.emit('error', e);
@@ -164,7 +218,8 @@ class FourAnime extends _events.EventEmitter {
         };
       };
 
-      const anime_data = await _aigle.Aigle.resolve(href).map(async_handler);
+      const anime_data = await _aigle.Aigle.resolve(href).map(async_handler); // .sortBy(d => d.ep);
+
       results = anime_data;
 
       if (cb) {
@@ -173,7 +228,7 @@ class FourAnime extends _events.EventEmitter {
         return results;
       }
     } catch (e) {
-      if (this.options.catch) {
+      if (this.catch) {
         throw e;
       } else {
         this.emit('error', e);

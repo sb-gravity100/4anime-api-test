@@ -15,11 +15,13 @@
   "homepage": "https://github.com/sb-gravity100/4anime-api-test#readme",
   "scripts": {
     "test": "jest",
-    "transpile": "babel ./src --out-file ./dist/index.js --no-comments --extensions \".js,.ts\"",
+    "transpile": "babel ./src --out-file ./dist/index.js --extensions \".js,.ts\"",
     "clean": "rimraf ./dist",
     "type": "tsc",
     "build": "npm-run-all clean transpile type",
-    "watch": "babel ./src --out-file ./dist/index.js --no-comments --extensions \".js,.ts\" -w"
+    "watch": "babel ./src --out-file ./dist/index.js --extensions \".js,.ts\" -w",
+    "docs:clean": "rimraf ./docs",
+    "docs:transpile": "jsdoc ./src/ -c jsdoc.json"
   },
   "keywords": [
     "anime",
@@ -46,6 +48,7 @@
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.37",
     "@types/yargs": "^16.0.1",
+    "better-docs": "^2.3.2",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",

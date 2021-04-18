@@ -129,6 +129,32 @@ const results = await Anime.term('jujutsu kaisen')
 const anime = await Anime.episodes(results[0])
 console.log(anime)
 ```
+
+## Error Handling
+
+By default, the instance will emit an 'error' event on errors. If you wanna use the catch block then set the `catch` option to true.
+
+```javascript
+// `catch` is false by default.
+const Anime = new FourAnime()
+
+Anime.on('error', console.error)
+
+// This will throw an error event...
+Anime.term('Something that doesn\'t exist', res => {
+   // `res` is null...
+})
+
+// If `catch` is set to true
+const Anime = new FourAnime({
+   catch: true
+})
+Anime.term('Something that doesn\'t exist').then(res => {
+   // `res` is null
+}).catch(e => {
+   // Do something about the error...
+})
+```
 ---
 
 __Thnx__
