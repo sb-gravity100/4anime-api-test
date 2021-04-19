@@ -14,11 +14,9 @@
   },
   "homepage": "https://github.com/sb-gravity100/4anime-api-test#readme",
   "scripts": {
-    "transpile": "babel ./src --out-file ./dist/index.js --extensions \".js,.ts\"",
     "clean": "rimraf ./dist",
     "type": "tsc",
-    "build": "npm-run-all clean transpile type",
-    "watch": "babel ./src --out-file ./dist/index.js --extensions \".js,.ts\" -w",
+    "watch": "tsc --watch",
     "publish": "np --yolo",
     "docs": "run-s docs:*",
     "docs:clean": "rimraf ./docs",
@@ -34,13 +32,14 @@
     "aigle": "^1.14.1",
     "axios": "^0.21.1",
     "axios-retry": "^3.1.9",
+    "core-js": "^3.10.2",
     "jsdom": "^16.5.3",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.10",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^14.14.37",
+    "@types/node": "^14.14.41",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"

@@ -1,3 +1,4 @@
+import 'core-js'
 import axios from 'axios';
 import { JSDOM } from 'jsdom';
 import { EventEmitter } from 'events';
@@ -8,7 +9,7 @@ import { Aigle } from 'aigle';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, {
-  retries: 3,
+  retries: 3
 });
 
 const events = new EventEmitter();
@@ -61,7 +62,7 @@ export interface AnimeData {
    * Episode data.
    * @see {@link AnimeEpisode}
    */
-  data: Array<AnimeEpisode>;
+  data: AnimeEpisode[];
 }
 
 /** Instance options */
@@ -77,8 +78,8 @@ export interface $4Anime {
   once: onEvent;
   term(
     s: string,
-    cb: (s: Array<SearchResult>) => void
-  ): Promise<Array<SearchResult> | void>;
+    cb: (s: SearchResult[]) => void
+  ): Promise<SearchResult[] | void>;
   episodes(
     a: SearchResult,
     cb?: (results: AnimeData | void) => void
@@ -141,15 +142,15 @@ export class FourAnime implements $4Anime {
    */
   async term(
     s: string,
-    cb: (s: Array<SearchResult>) => void
-  ): Promise<Array<SearchResult> | undefined> {
-    let results: Array<SearchResult>;
+    cb: (s: SearchResult[]) => void
+  ): Promise<SearchResult[] | undefined> {
+    let results: SearchResult[];
     try {
       const search = await axios.get('https://4anime.to', {
         method: 'GET',
         params: { s },
       });
-      const { document } = new JSDOM(search.data).window;
+      const document = (new JSDOM(search.data)).window.document;
       const _a: any = Array.from(
         document.querySelectorAll('div#headerDIV_95 a'),
         (a: any) => {
@@ -218,19 +219,16 @@ export class FourAnime implements $4Anime {
   ): Promise<AnimeData | void> {
     let results: AnimeData;
     try {
-      const anime = await axios({
-        method: 'GET',
-        url: a.link,
-      });
-      const { document } = new JSDOM(anime.data).window;
-      const arr_href: Array<URL> = Array.from(
+      const anime = await axios.get(a.link);
+      const document = (new JSDOM(anime.data)).window.document;
+      const arr_href: URL[] = Array.from(
         document.querySelectorAll('ul.episodes.range.active a'),
         (link: any) => new URL(link.href)
       );
       const type: AnimeType = document.querySelector('.details .detail a')
-        .textContent;
+        .innerText;
       const title: string = document.querySelector('.single-anime-desktop')
-        .textContent;
+        .innerText;
       const href_data: any = await this.hrefsData(arr_href);
       const all_data: AnimeData = {
         title: title,
@@ -260,9 +258,9 @@ export class FourAnime implements $4Anime {
   }
   /** @private */
   private async hrefsData(
-    href: Array<URL>
-  ): Promise<Array<AnimeEpisode> | void> {
-    let results: Array<AnimeEpisode>,
+    href: URL[]
+  ): Promise<void | AnimeEpisode[]> {
+    let results: AnimeEpisode[],
       qLength: number = 0;
     try {
       const async_handler = async (e: URL) => {

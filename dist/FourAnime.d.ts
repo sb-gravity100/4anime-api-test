@@ -1,3 +1,4 @@
+import 'core-js';
 declare type AnimeStatus = 'Completed' | 'Currently Airing';
 declare type AnimeType = 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA';
 declare type onEvent = (event: string | symbol, listener: (...args: any[]) => void) => void;
@@ -6,7 +7,7 @@ declare type emitEvent = (event: string | symbol, ...args: any[]) => void;
 export interface SearchResult {
     /** Title of the anime. */
     title?: string;
-    /** Url to the anime in {@link 4anime.to} */
+    /** Url to the anime in 4anime.to */
     link: string;
     /** Year aired. */
     year?: string;
@@ -21,26 +22,26 @@ export interface AnimeEpisode {
     ep: number;
     /** Filename */
     filename: string;
-    /** Anime id based on {@link 4anime.to} */
+    /** Anime id based on 4anime.to */
     id: number;
 }
 /** Data scraped from 4anime */
 export interface AnimeData {
-    /** @see SearchResult.title */
+    /** @see {@link SearchResult.title} */
     title?: string;
     /** Number of episodes. */
     eps?: number;
     /** Type of anime...(eg. 'Movie', 'TV Series', 'OVA'...). */
     type?: AnimeType;
-    /** @see SearchResult.status */
+    /** @see {@link SearchResult.status} */
     status?: AnimeStatus;
-    /** @see SearchResult.year */
+    /** @see {@link SearchResult.year} */
     year?: string;
     /**
      * Episode data.
-     * @see AnimeEpisode[]
+     * @see {@link AnimeEpisode}
      */
-    data: Array<AnimeEpisode>;
+    data: AnimeEpisode[];
 }
 /** Instance options */
 export interface AnimeOptions {
@@ -51,7 +52,7 @@ export interface AnimeOptions {
 export interface $4Anime {
     on: onEvent;
     once: onEvent;
-    term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | void>;
+    term(s: string, cb: (s: SearchResult[]) => void): Promise<SearchResult[] | void>;
     episodes(a: SearchResult, cb?: (results: AnimeData | void) => void): Promise<AnimeData | void>;
 }
 /** Represents the class for getting links from 4Anime.to. */
@@ -102,7 +103,7 @@ export declare class FourAnime implements $4Anime {
      * })
      * ```
      */
-    term(s: string, cb: (s: Array<SearchResult>) => void): Promise<Array<SearchResult> | undefined>;
+    term(s: string, cb: (s: SearchResult[]) => void): Promise<SearchResult[] | undefined>;
     /**
      * Callback for episodes.
      * @callback episodesCallback
@@ -113,7 +114,7 @@ export declare class FourAnime implements $4Anime {
      * @param {object} a - an object from the search results.
      * @param {episodesCallback} [cb] - optional callback.
      * @returns {object[] | void} An array of search results.
-     * @see FourAnime#term
+     * @see {@link FourAnime.term}
      * @example
      * ```typescript
      * const search = await Anime.term('jujutsu kaisen')
@@ -123,6 +124,7 @@ export declare class FourAnime implements $4Anime {
      * ```
      */
     episodes(a: SearchResult, cb?: (results: AnimeData | void) => void): Promise<AnimeData | void>;
+    /** @private */
     private hrefsData;
 }
 export {};

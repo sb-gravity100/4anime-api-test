@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FourAnime = void 0;
+require("core-js");
 var axios_1 = __importDefault(require("axios"));
 var jsdom_1 = require("jsdom");
 var events_1 = require("events");
@@ -49,7 +50,7 @@ var lodash_1 = __importDefault(require("lodash"));
 var aigle_1 = require("aigle");
 var axios_retry_1 = __importDefault(require("axios-retry"));
 axios_retry_1.default(axios_1.default, {
-    retries: 3,
+    retries: 3
 });
 var events = new events_1.EventEmitter();
 /** Represents the class for getting links from 4Anime.to. */
@@ -102,7 +103,7 @@ var FourAnime = /** @class */ (function () {
                             })];
                     case 1:
                         search = _b.sent();
-                        document = new jsdom_1.JSDOM(search.data).window.document;
+                        document = (new jsdom_1.JSDOM(search.data)).window.document;
                         _a = Array.from(document.querySelectorAll('div#headerDIV_95 a'), function (a) {
                             var text = a.textContent
                                 .trim()
@@ -156,7 +157,7 @@ var FourAnime = /** @class */ (function () {
      * @param {object} a - an object from the search results.
      * @param {episodesCallback} [cb] - optional callback.
      * @returns {object[] | void} An array of search results.
-     * @see FourAnime#term
+     * @see {@link FourAnime.term}
      * @example
      * ```typescript
      * const search = await Anime.term('jujutsu kaisen')
@@ -172,18 +173,15 @@ var FourAnime = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, axios_1.default({
-                                method: 'GET',
-                                url: a.link,
-                            })];
+                        return [4 /*yield*/, axios_1.default.get(a.link)];
                     case 1:
                         anime = _b.sent();
-                        document = new jsdom_1.JSDOM(anime.data).window.document;
+                        document = (new jsdom_1.JSDOM(anime.data)).window.document;
                         arr_href = Array.from(document.querySelectorAll('ul.episodes.range.active a'), function (link) { return new url_1.URL(link.href); });
                         type = document.querySelector('.details .detail a')
-                            .textContent;
+                            .innerText;
                         title = document.querySelector('.single-anime-desktop')
-                            .textContent;
+                            .innerText;
                         return [4 /*yield*/, this.hrefsData(arr_href)];
                     case 2:
                         href_data = _b.sent();
@@ -221,6 +219,7 @@ var FourAnime = /** @class */ (function () {
             });
         });
     };
+    /** @private */
     FourAnime.prototype.hrefsData = function (href) {
         return __awaiter(this, void 0, void 0, function () {
             var results, qLength, async_handler, anime_data, e_3;
