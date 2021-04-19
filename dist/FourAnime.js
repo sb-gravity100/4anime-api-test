@@ -1,19 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -64,29 +49,28 @@ var lodash_1 = __importDefault(require("lodash"));
 var aigle_1 = require("aigle");
 var axios_retry_1 = __importDefault(require("axios-retry"));
 axios_retry_1.default(axios_1.default, {
-    retries: 3
+    retries: 3,
 });
-/**
- * Represents the class for getting links from 4Anime.to.
- * @class FourAnime - Represents the class for getting links from 4Anime.to.
- * @extends EventEmitter
- */
-var FourAnime = /** @class */ (function (_super) {
-    __extends(FourAnime, _super);
+var events = new events_1.EventEmitter();
+/** Represents the class for getting links from 4Anime.to. */
+var FourAnime = /** @class */ (function () {
     /**
      * Creates a new FourAnime instance.
      * @param {Object} [FourAnimeOptions] - options.
      * @param {boolean} [FourAnimeOptions.catch] - throw all errors in a catch block if true. Otherwise it emits an error event.
      * @example
+     * ```typescript
      * const Anime = new FourAnime({
      *    catch: false, // default
      * })
+     * ```
      */
     function FourAnime(options) {
         if (options === void 0) { options = {}; }
-        var _this = _super.call(this, { captureRejections: true }) || this;
-        _this.catch = options.catch || false;
-        return _this;
+        this.catch = options.catch || false;
+        this.on = events.on;
+        this.once = events.once;
+        this.emit = events.emit;
     }
     /**
      * Callback for term.
@@ -99,9 +83,11 @@ var FourAnime = /** @class */ (function (_super) {
      * @param {searchCallback} [cb] - optional callback.
      * @returns {object[] | void} An array of search results.
      * @example
+     * ```typescript
      * Anime.term('jujutsu kaisen', results => {
      *   // Do something with it...
      * })
+     * ```
      */
     FourAnime.prototype.term = function (s, cb) {
         return __awaiter(this, void 0, void 0, function () {
@@ -172,10 +158,12 @@ var FourAnime = /** @class */ (function (_super) {
      * @returns {object[] | void} An array of search results.
      * @see FourAnime#term
      * @example
+     * ```typescript
      * const search = await Anime.term('jujutsu kaisen')
      * Anime.episodes(search[0], results => {
      *   // Do something with the results...
      * })
+     * ```
      */
     FourAnime.prototype.episodes = function (a, cb) {
         return __awaiter(this, void 0, void 0, function () {
@@ -288,6 +276,6 @@ var FourAnime = /** @class */ (function (_super) {
         });
     };
     return FourAnime;
-}(events_1.EventEmitter));
+}());
 exports.FourAnime = FourAnime;
 //# sourceMappingURL=FourAnime.js.map

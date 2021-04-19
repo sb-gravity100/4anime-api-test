@@ -8,39 +8,73 @@ import { Aigle } from 'aigle';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, {
-  retries: 3
+  retries: 3,
 });
+
+const events = new EventEmitter();
 
 type AnimeStatus = 'Completed' | 'Currently Airing';
 type AnimeType = 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA';
+type onEvent = (
+  event: string | symbol,
+  listener: (...args: any[]) => void
+) => void;
+type emitEvent = (event: string | symbol, ...args: any[]) => void;
 
+/** Search data */
 export interface SearchResult {
+  /** Title of the anime. */
   title?: string;
+  /** Url to the anime in 4anime.to */
   link: string;
+  /** Year aired. */
   year?: string;
+  /** 'Completed' or 'Currently Airing'. */
   status?: AnimeStatus;
 }
 
+/** Data of every episode */
 export interface AnimeEpisode {
+  /** Url of the source. */
   src: string;
+  /** Episode number. */
   ep: number;
+  /** Filename */
   filename: string;
+  /** Anime id based on 4anime.to */
   id: number;
 }
 
+/** Data scraped from 4anime */
 export interface AnimeData {
+  /** @see {@link SearchResult.title} */
   title?: string;
+  /** Number of episodes. */
   eps?: number;
+  /** Type of anime...(eg. 'Movie', 'TV Series', 'OVA'...). */
   type?: AnimeType;
+  /** @see {@link SearchResult.status} */
   status?: AnimeStatus;
+  /** @see {@link SearchResult.year} */
   year?: string;
+  /**
+   * Episode data.
+   * @see {@link AnimeEpisode}
+   */
   data: Array<AnimeEpisode>;
 }
 
+/** Instance options */
 export interface AnimeOptions {
+  /**  Set to true if you want all errors to be thrown in a catch block. */
   catch?: boolean;
 }
+
+
+/** Interface of the FourAnime class. */
 export interface $4Anime {
+  on: onEvent;
+  once: onEvent;
   term(
     s: string,
     cb: (s: Array<SearchResult>) => void
@@ -51,28 +85,41 @@ export interface $4Anime {
   ): Promise<AnimeData | void>;
 }
 
-/**
- * Represents the class for getting links from 4Anime.to.
- * @class FourAnime - Represents the class for getting links from 4Anime.to.
- * @extends EventEmitter
- */
-export class FourAnime extends EventEmitter implements $4Anime {
+/** Represents the class for getting links from 4Anime.to. */
+export class FourAnime implements $4Anime {
   /**
-   * @private
+   * @defaultValue false
+   * @readonly
    */
-  private catch?: boolean;
+  public catch?: boolean;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_on_eventname_listener}
+   */
+  public on: onEvent;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_once_eventname_listener}
+   */
+  public once: onEvent;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_emit_eventname_args}
+   */
+  protected emit: emitEvent;
   /**
    * Creates a new FourAnime instance.
    * @param {Object} [FourAnimeOptions] - options.
    * @param {boolean} [FourAnimeOptions.catch] - throw all errors in a catch block if true. Otherwise it emits an error event.
    * @example
+   * ```typescript
    * const Anime = new FourAnime({
    *    catch: false, // default
    * })
+   * ```
    */
   constructor(options: AnimeOptions = {}) {
-    super({ captureRejections: true });
     this.catch = options.catch || false;
+    this.on = events.on;
+    this.once = events.once;
+    this.emit = events.emit;
   }
   /**
    * Callback for term.
@@ -86,9 +133,11 @@ export class FourAnime extends EventEmitter implements $4Anime {
    * @param {searchCallback} [cb] - optional callback.
    * @returns {object[] | void} An array of search results.
    * @example
+   * ```typescript
    * Anime.term('jujutsu kaisen', results => {
    *   // Do something with it...
    * })
+   * ```
    */
   async term(
     s: string,
@@ -154,12 +203,14 @@ export class FourAnime extends EventEmitter implements $4Anime {
    * @param {object} a - an object from the search results.
    * @param {episodesCallback} [cb] - optional callback.
    * @returns {object[] | void} An array of search results.
-   * @see FourAnime#term
+   * @see {@link FourAnime.term}
    * @example
+   * ```typescript
    * const search = await Anime.term('jujutsu kaisen')
    * Anime.episodes(search[0], results => {
    *   // Do something with the results...
    * })
+   * ```
    */
   async episodes(
     a: SearchResult,
@@ -207,8 +258,10 @@ export class FourAnime extends EventEmitter implements $4Anime {
       }
     }
   }
-
-  private async hrefsData(href: Array<URL>): Promise<Array<AnimeEpisode> | void> {
+  /** @private */
+  private async hrefsData(
+    href: Array<URL>
+  ): Promise<Array<AnimeEpisode> | void> {
     let results: Array<AnimeEpisode>,
       qLength: number = 0;
     try {
