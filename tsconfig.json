@@ -7,8 +7,8 @@
     ],
     "include": ["./src/*.ts"],
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "target": "ES5",
+        "module": "CommonJS",
         "lib": [],
         "declaration": true,
         "emitDeclarationOnly": false,
@@ -26,6 +26,6 @@
         "entryPoints": ["src/"],
         "name": "4Anime Scraper API",
         "includeVersion": "true",
-        "readme": "./README.md",
+        "readme": "./README.md"
     }
 }
