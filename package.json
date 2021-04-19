@@ -1,6 +1,6 @@
 {
   "name": "node-4anime-scraper",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "index.js",
   "repository": {
     "type": "git",
