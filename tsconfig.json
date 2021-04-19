@@ -1,19 +1,19 @@
 {
-    "exclude": ["node_modules/", ".dist/index.js", ".dist/index.d.ts"],
-    "include": ["src/4anime.ts"],
+    "exclude": ["node_modules/@babel/", "./index.js", "./index.d.ts", "./src/util/**/*"],
+    "include": ["./src/*.ts"],
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
         "lib": [],
         "declaration": true,
-        "emitDeclarationOnly": true,
+        "emitDeclarationOnly": false,
         "sourceMap": true,
-        "outFile": "./dist/index.js",
-        "strict": false,
+        "outDir": "./dist/",
+        "strict": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": false
     }
 }

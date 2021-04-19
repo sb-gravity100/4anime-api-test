@@ -1,4 +1,4 @@
-const FourAnime = require('./dist/index.js');
+const { FourAnime } = require('./dist/index.js');
 
 const Anime = new FourAnime({
    catch: false,
