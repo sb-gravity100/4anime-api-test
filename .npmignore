@@ -1,2 +1,4 @@
 coverage/
 yarn-error.log
+yarn.lock
+docs/
