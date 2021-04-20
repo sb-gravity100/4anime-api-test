@@ -14,7 +14,6 @@
   },
   "homepage": "https://github.com/sb-gravity100/4anime-api-test#readme",
   "scripts": {
-    "test": "node test.js",
     "clean": "rimraf ./dist",
     "type": "tsc",
     "watch": "tsc --watch",
