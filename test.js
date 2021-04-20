@@ -1,17 +1,10 @@
 const { FourAnime } = require('./index.js');
 
-const Anime = new FourAnime()
+const Anime = new FourAnime();
+Anime.on('error', e => console.log(e));
 
-Anime.on('loaded', console.log)
-Anime.on('error', console.log)
-
-Anime.term('jujutsu kaisen', res => {
-   if (res) {
-      console.log('Search is fine.')
-   }
-   Anime.episodes(res[0], r => {
-      if (r) {
-         console.log('Data fetching is fine.')
-      }
-   })
-})
+(async () => {
+   const search = await Anime.term('boku no hero')
+   const res = await Anime.episodes(search.shift())
+   console.log(res)
+})()

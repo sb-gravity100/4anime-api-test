@@ -50,7 +50,7 @@ var lodash_1 = __importDefault(require("lodash"));
 var aigle_1 = require("aigle");
 var axios_retry_1 = __importDefault(require("axios-retry"));
 axios_retry_1.default(axios_1.default, {
-    retries: 3
+    retries: 3,
 });
 var events = new events_1.EventEmitter();
 /** Represents the class for getting links from 4Anime.to. */
@@ -69,6 +69,7 @@ var FourAnime = /** @class */ (function () {
     function FourAnime(options) {
         if (options === void 0) { options = {}; }
         this.catch = options.catch || false;
+        this.epNum = options.episodes;
         this.on = events.on;
         this.once = events.once;
         this.emit = events.emit;
@@ -103,7 +104,7 @@ var FourAnime = /** @class */ (function () {
                             })];
                     case 1:
                         search = _b.sent();
-                        document = (new jsdom_1.JSDOM(search.data)).window.document;
+                        document = new jsdom_1.JSDOM(search.data).window.document;
                         _a = Array.from(document.querySelectorAll('div#headerDIV_95 a'), function (a) {
                             var text = a.textContent
                                 .trim()
@@ -176,12 +177,12 @@ var FourAnime = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(a.link)];
                     case 1:
                         anime = _b.sent();
-                        document = (new jsdom_1.JSDOM(anime.data)).window.document;
+                        document = new jsdom_1.JSDOM(anime.data).window.document;
                         arr_href = Array.from(document.querySelectorAll('ul.episodes.range.active a'), function (link) { return new url_1.URL(link.href); });
                         type = document.querySelector('.details .detail a')
-                            .innerText;
+                            .textContent;
                         title = document.querySelector('.single-anime-desktop')
-                            .innerText;
+                            .textContent;
                         return [4 /*yield*/, this.hrefsData(arr_href)];
                     case 2:
                         href_data = _b.sent();
@@ -238,12 +239,15 @@ var FourAnime = /** @class */ (function () {
                                     case 0: return [4 /*yield*/, axios_1.default.get(e.href)];
                                     case 1:
                                         _anime = _b.sent();
-                                        document = new jsdom_1.JSDOM(_anime.data).window.document;
-                                        ep = Number(e.pathname.split('-').pop()) || 1;
+                                        document = new jsdom_1.JSDOM(_anime.data, {
+                                            url: e.href,
+                                            contentType: 'text/html',
+                                        }).window.document;
+                                        qLength++;
+                                        ep = qLength;
                                         id = Number(e.searchParams.get('id'));
                                         src = document.querySelector('video#example_video_1 source').src;
                                         filename = path_1.default.basename(src);
-                                        qLength++;
                                         this.emit('loaded', qLength, href.length);
                                         return [2 /*return*/, {
                                                 ep: ep,
@@ -254,10 +258,11 @@ var FourAnime = /** @class */ (function () {
                                 }
                             });
                         }); };
-                        return [4 /*yield*/, aigle_1.Aigle.resolve(href).map(async_handler)];
+                        return [4 /*yield*/, aigle_1.Aigle.resolve(href)
+                                .map(async_handler)
+                                .sortBy(function (d) { return d.ep; })];
                     case 2:
                         anime_data = _b.sent();
-                        // .sortBy(d => d.ep);
                         results = anime_data;
                         return [2 /*return*/, results];
                     case 3:

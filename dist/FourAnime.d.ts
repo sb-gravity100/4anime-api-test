@@ -47,6 +47,8 @@ export interface AnimeData {
 export interface AnimeOptions {
     /**  Set to true if you want all errors to be thrown in a catch block. */
     catch?: boolean;
+    /** Optional episode filtering. */
+    episodes?: number[];
 }
 /** Interface of the FourAnime class. */
 export interface $4Anime {
@@ -62,6 +64,10 @@ export declare class FourAnime implements $4Anime {
      * @readonly
      */
     catch?: boolean;
+    /**
+     * @readonly
+     */
+    epNum?: number[];
     /**
      * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_on_eventname_listener}
      */

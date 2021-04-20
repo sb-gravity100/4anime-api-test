@@ -1,4 +1,4 @@
-import 'core-js'
+import 'core-js';
 import axios from 'axios';
 import { JSDOM } from 'jsdom';
 import { EventEmitter } from 'events';
@@ -9,7 +9,7 @@ import { Aigle } from 'aigle';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, {
-  retries: 3
+  retries: 3,
 });
 
 const events = new EventEmitter();
@@ -69,8 +69,9 @@ export interface AnimeData {
 export interface AnimeOptions {
   /**  Set to true if you want all errors to be thrown in a catch block. */
   catch?: boolean;
+  /** Optional episode filtering. */
+  episodes?: number[];
 }
-
 
 /** Interface of the FourAnime class. */
 export interface $4Anime {
@@ -93,6 +94,10 @@ export class FourAnime implements $4Anime {
    * @readonly
    */
   public catch?: boolean;
+  /**
+   * @readonly
+   */
+  public epNum?: number[];
   /**
    * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_on_eventname_listener}
    */
@@ -118,6 +123,7 @@ export class FourAnime implements $4Anime {
    */
   constructor(options: AnimeOptions = {}) {
     this.catch = options.catch || false;
+    this.epNum = options.episodes;
     this.on = events.on;
     this.once = events.once;
     this.emit = events.emit;
@@ -150,7 +156,7 @@ export class FourAnime implements $4Anime {
         method: 'GET',
         params: { s },
       });
-      const document = (new JSDOM(search.data)).window.document;
+      const document = new JSDOM(search.data).window.document;
       const _a: any = Array.from(
         document.querySelectorAll('div#headerDIV_95 a'),
         (a: any) => {
@@ -220,15 +226,15 @@ export class FourAnime implements $4Anime {
     let results: AnimeData;
     try {
       const anime = await axios.get(a.link);
-      const document = (new JSDOM(anime.data)).window.document;
-      const arr_href: URL[] = Array.from(
+      const document = new JSDOM(anime.data).window.document;
+      let arr_href: any[] = Array.from(
         document.querySelectorAll('ul.episodes.range.active a'),
         (link: any) => new URL(link.href)
       );
       const type: AnimeType = document.querySelector('.details .detail a')
-        .innerText;
+        .textContent;
       const title: string = document.querySelector('.single-anime-desktop')
-        .innerText;
+        .textContent;
       const href_data: any = await this.hrefsData(arr_href);
       const all_data: AnimeData = {
         title: title,
@@ -257,22 +263,23 @@ export class FourAnime implements $4Anime {
     }
   }
   /** @private */
-  private async hrefsData(
-    href: URL[]
-  ): Promise<void | AnimeEpisode[]> {
+  private async hrefsData(href: URL[]): Promise<void | AnimeEpisode[]> {
     let results: AnimeEpisode[],
       qLength: number = 0;
     try {
       const async_handler = async (e: URL) => {
         const _anime = await axios.get(e.href);
-        const { document } = new JSDOM(_anime.data).window;
-        const ep: number = Number(e.pathname.split('-').pop()) || 1;
+        const { document } = new JSDOM(_anime.data, {
+          url: e.href,
+          contentType: 'text/html',
+        }).window;
+        qLength++;
+        const ep: number = qLength;
         const id: number = Number(e.searchParams.get('id'));
         const src: string = document.querySelector(
           'video#example_video_1 source'
         ).src;
         const filename = path.basename(src);
-        qLength++;
         this.emit('loaded', qLength, href.length);
         return {
           ep,
@@ -281,8 +288,9 @@ export class FourAnime implements $4Anime {
           filename,
         };
       };
-      const anime_data = await Aigle.resolve(href).map(async_handler);
-      // .sortBy(d => d.ep);
+      const anime_data = await Aigle.resolve(href)
+        .map(async_handler)
+        .sortBy(d => d.ep);
       results = anime_data;
       return results;
     } catch (e) {
