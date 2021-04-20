@@ -21,7 +21,7 @@
     "docs": "run-s docs:*",
     "docs:clean": "rimraf ./docs",
     "docs:transpile": "typedoc",
-    "prepatch": "np prepatch --yolo tag=pre"
+    "prepatch": "np prepatch --yolo --tag=pre"
   },
   "keywords": [
     "anime",
