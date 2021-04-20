@@ -1,4 +1,4 @@
-import 'core-js'
+import 'core-js';
 import axios from 'axios';
 import { JSDOM } from 'jsdom';
 import { EventEmitter } from 'events';
@@ -9,8 +9,8 @@ import { Aigle } from 'aigle';
 import axiosRetry from 'axios-retry';
 
 axiosRetry(axios, {
-   retries: 3
-})
+  retries: 3,
+});
 
 const events = new EventEmitter();
 
@@ -71,11 +71,11 @@ export interface AnimeOptions {
   catch?: boolean;
 }
 
-
 /** Interface of the FourAnime class. */
 export interface SimplyClass {
   on: onEvent;
   once: onEvent;
+  catch?: boolean;
   term(
     s: string,
     cb: (s: SearchResult[]) => void
@@ -87,5 +87,91 @@ export interface SimplyClass {
 }
 
 export class SimplyMoe implements SimplyClass {
-   constructor()
+  /**
+   * @defaultValue false
+   * @readonly
+   */
+  public catch?: boolean;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_on_eventname_listener}
+   */
+  public on: onEvent;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_once_eventname_listener}
+   */
+  public once: onEvent;
+  /**
+   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_emit_eventname_args}
+   */
+  protected emit: emitEvent;
+  /**
+   * Creates a new FourAnime instance.
+   * @param {Object} [FourAnimeOptions] - options.
+   * @param {boolean} [FourAnimeOptions.catch] - throw all errors in a catch block if true. Otherwise it emits an error event.
+   * @example
+   * ```typescript
+   * const Anime = new FourAnime({
+   *    catch: false, // default
+   * })
+   * ```
+   */
+  constructor(options: AnimeOptions = {}) {
+    this.catch = options.catch || false;
+    this.on = events.on;
+    this.once = events.once;
+    this.emit = events.emit;
+  }
+
+  /**
+   * Callback for term.
+   * @callback searchCallback
+   * @param {object[] | void} SearchResult
+   */
+
+  /**
+   * Search an anime by a term.
+   * @param {string} s - string to search for.
+   * @param {searchCallback} [cb] - optional callback.
+   * @returns {object[] | void} An array of search results.
+   * @example
+   * ```typescript
+   * Anime.term('jujutsu kaisen', results => {
+   *   // Do something with it...
+   * })
+   * ```
+   */
+  async term(
+    s: string,
+    cb: (s: SearchResult[]) => void
+  ): Promise<SearchResult[] | undefined> {
+    let results: SearchResult[];
+    try {
+      const search = await axios.get('https://simply.moe', {
+        method: 'GET',
+        params: { s },
+      });
+      const document = (new JSDOM(search.data)).window.document;
+      const _a: any = Array.from();
+      if (_a.length < 1) {
+        throw {
+          name: 'Error',
+          code: 'ANINOTFOUND',
+          message: 'Anime not found',
+        };
+      }
+      results = _a;
+      if (cb) {
+        cb(results);
+      } else {
+        return results;
+      }
+    } catch (e) {
+      if (this.catch) {
+        throw e;
+      } else {
+        this.emit('error', e);
+        return;
+      }
+    }
+  }
 }
