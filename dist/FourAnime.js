@@ -246,8 +246,8 @@ var FourAnime = /** @class */ (function () {
                                         id = Number(e.searchParams.get('id'));
                                         src = document.querySelector('video#example_video_1 source').src;
                                         filename = path_1.default.basename(src);
+                                        ep = Number(document.querySelector('.episodes.range.active .active').textContent);
                                         qLength++;
-                                        ep = qLength;
                                         this.emit('loaded', qLength, href.length);
                                         return [2 /*return*/, {
                                                 ep: ep,
@@ -260,7 +260,7 @@ var FourAnime = /** @class */ (function () {
                         }); };
                         return [4 /*yield*/, aigle_1.Aigle.resolve(href)
                                 .map(async_handler)
-                                .sortBy(function (d) { return d.ep; })];
+                                .sortBy('ep')];
                     case 2:
                         anime_data = _b.sent();
                         results = anime_data;

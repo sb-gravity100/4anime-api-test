@@ -278,8 +278,10 @@ export class FourAnime implements $4Anime {
           'video#example_video_1 source'
         ).src;
         const filename = path.basename(src);
+        const ep: number = Number(
+          document.querySelector('.episodes.range.active .active').textContent
+        );
         qLength++;
-        const ep: number = qLength;
         this.emit('loaded', qLength, href.length);
         return {
           ep,
@@ -290,7 +292,7 @@ export class FourAnime implements $4Anime {
       };
       const anime_data = await Aigle.resolve(href)
         .map(async_handler)
-        .sortBy(d => d.ep);
+        .sortBy('ep');
       results = anime_data;
       return results;
     } catch (e) {
