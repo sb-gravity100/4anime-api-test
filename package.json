@@ -23,7 +23,7 @@
     "docs:1clean": "rimraf ./docs",
     "docs:2transpile": "typedoc",
     "docs:3commit": "git add docs && git commit -m \"Docs updated\" ",
-    "prepatch": "np prepatch --yolo --no-yarn --tag=pre"
+    "prerelease": "np prerelease --yolo --no-yarn --tag=pre"
   },
   "keywords": [
     "anime",

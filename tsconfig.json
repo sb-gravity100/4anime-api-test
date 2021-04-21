@@ -14,7 +14,7 @@
         "emitDeclarationOnly": false,
         "sourceMap": true,
         "outDir": "./dist/",
-        "strict": true,
+        "strict": false,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
