@@ -17,13 +17,13 @@
     "clean": "rimraf ./dist",
     "type": "tsc",
     "watch": "tsc --watch",
-    "publish": "np --yolo",
+    "publish": "np --yolo --no-yarn",
     "prepublish": "yarn run docs",
     "docs": "run-s docs:*",
     "docs:1clean": "rimraf ./docs",
     "docs:2transpile": "typedoc",
     "docs:3commit": "git add docs && git commit -m \"Docs updated\" ",
-    "prepatch": "np prepatch --yolo --tag=pre"
+    "prepatch": "np prepatch --yolo --no-yarn --tag=pre"
   },
   "keywords": [
     "anime",
