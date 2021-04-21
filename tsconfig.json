@@ -25,7 +25,7 @@
         "out": "./docs/",
         "entryPoints": ["src/"],
         "name": "4Anime Scraper API",
-        "includeVersion": "true",
+        "includeVersion": "false",
         "readme": "./README.md"
     }
 }
