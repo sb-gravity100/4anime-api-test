@@ -273,13 +273,13 @@ export class FourAnime implements $4Anime {
           url: e.href,
           contentType: 'text/html',
         }).window;
-        qLength++;
-        const ep: number = qLength;
         const id: number = Number(e.searchParams.get('id'));
         const src: string = document.querySelector(
           'video#example_video_1 source'
         ).src;
         const filename = path.basename(src);
+        qLength++;
+        const ep: number = qLength;
         this.emit('loaded', qLength, href.length);
         return {
           ep,

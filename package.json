@@ -18,6 +18,7 @@
     "type": "tsc",
     "watch": "tsc --watch",
     "publish": "np --yolo",
+    "prepublish": "yarn run docs",
     "docs": "run-s docs:*",
     "docs:clean": "rimraf ./docs",
     "docs:transpile": "typedoc",

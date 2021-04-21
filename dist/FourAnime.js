@@ -233,7 +233,7 @@ var FourAnime = /** @class */ (function () {
                     case 1:
                         _b.trys.push([1, 3, , 4]);
                         async_handler = function (e) { return __awaiter(_this, void 0, void 0, function () {
-                            var _anime, document, ep, id, src, filename;
+                            var _anime, document, id, src, filename, ep;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
                                     case 0: return [4 /*yield*/, axios_1.default.get(e.href)];
@@ -243,11 +243,11 @@ var FourAnime = /** @class */ (function () {
                                             url: e.href,
                                             contentType: 'text/html',
                                         }).window.document;
-                                        qLength++;
-                                        ep = qLength;
                                         id = Number(e.searchParams.get('id'));
                                         src = document.querySelector('video#example_video_1 source').src;
                                         filename = path_1.default.basename(src);
+                                        qLength++;
+                                        ep = qLength;
                                         this.emit('loaded', qLength, href.length);
                                         return [2 /*return*/, {
                                                 ep: ep,
