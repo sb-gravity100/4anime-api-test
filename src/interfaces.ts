@@ -6,6 +6,7 @@ export type TonEvent = (
    event: string | symbol,
    listener: (...args: any[]) => void
 ) => void;
+export type TClassEvents = 'error'|'loaded'
 export type TemitEvent = (event: string | symbol, ...args: any[]) => void;
 
 /** Search data */
@@ -30,7 +31,7 @@ export interface IEpisodeHrefs {
    /** Link to an episode. */
    href: string;
    /** Episode number */
-   ep: number | string;
+   ep: number;
 }
 
 /** Data of every episode */
