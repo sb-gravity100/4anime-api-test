@@ -1,30 +1,63 @@
 /** 'Completed' | 'Currently Airing' */
 export type TAnimeStatus = 'Completed' | 'Currently Airing' | string;
 /** 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' */
-export type TAnimeType = 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' | string;
+export type TAnimeType =
+   | 'Movie'
+   | 'TV Series'
+   | 'OVA'
+   | 'Special'
+   | 'ONA'
+   | string;
 export type TonEvent = (
    event: string | symbol,
    listener: (...args: any[]) => void
 ) => void;
-export type TClassEvents = 'error'|'loaded'
+export type TClassEvents = 'error' | 'loaded';
 export type TemitEvent = (event: string | symbol, ...args: any[]) => void;
+export type TSearchProperties =
+   | 'title'
+   | 'main'
+   | 'type'
+   | 'year'
+   | 'genres'
+   | 'href'
+   | 'status';
 
 /** Search data */
 export interface ISearchResult {
+   /** Title of the anime. */
+   readonly title: string;
+   /** Main page. */
+   readonly main: string;
+   /** @see TAnimeType */
+   readonly type: TAnimeType;
+   /** Year aired. */
+   readonly year: string;
+   /** An array of genres. */
+   readonly genres: string[];
+   /** An array of episode links. */
+   readonly hrefs: IEpisodeHrefs[];
+   /** @see TAnimeStatus */
+   readonly status: TAnimeStatus;
+   getAnime(options?: IEpisodeOptions): Promise<IAnimeData | void>;
+   toJSON(): ISearchJSON;
+}
+
+export interface ISearchJSON {
    /** Title of the anime. */
    title: string;
    /** Main page. */
    main: string;
    /** @see TAnimeType */
-   type?: TAnimeType;
+   type: TAnimeType;
    /** Year aired. */
-   year?: string;
+   year: string;
    /** An array of genres. */
-   genres?: string[];
+   genres: string[];
    /** An array of episode links. */
    hrefs: IEpisodeHrefs[];
    /** @see TAnimeStatus */
-   status?: TAnimeStatus;
+   status: TAnimeStatus;
 }
 
 export interface IEpisodeHrefs {
@@ -47,24 +80,29 @@ export interface IAnimeEpisode {
 }
 
 /** Data scraped from 4anime */
-export interface IAnimeData {
+export interface IAnimeDataJSON {
    /** @see {@link SearchResult.title} */
-   title?: string;
+   title: string;
    /** Number of episodes. */
-   eps?: number;
+   eps: number;
    /** @see TAnimeType */
-   type?: TAnimeType;
+   type: TAnimeType;
    /** @see TAnimeStatus */
-   status?: TAnimeStatus;
+   status: TAnimeStatus;
    /** An array of genres. */
-   genres?: string[];
+   genres: string[];
    /** @see {@link SearchResult.year} */
-   year?: string;
+   year: string;
    /**
     * Episode data.
     * @see {@link IAnimeEpisode}
     */
    data: IAnimeEpisode[];
+}
+export interface IAnimeData {
+   getEpisodes(): IAnimeEpisode[];
+   // downloadEpisodes(): Promise<void> // soon!!!;
+   toJSON(): IAnimeDataJSON;
 }
 
 export interface IEpisodeOptions {
@@ -79,15 +117,16 @@ export interface IAnimeOptions {
 
 /** Interface of the FourAnime class. */
 export interface I4Anime {
-   on: TonEvent;
-   once: TonEvent;
    term(
       s: string,
-      cb: (s: ISearchResult[]) => void
-   ): Promise<ISearchResult[] | void>;
+   ): Promise<ISearchResult[]>;
+}
+
+export interface IBase {
+   on: TonEvent;
+   once: TonEvent;
    episodes(
-      a: ISearchResult,
+      a: ISearchJSON,
       options?: IEpisodeOptions,
-      cb?: (results: IAnimeData | void) => void
-   ): Promise<IAnimeData | void>;
+   ): Promise<IAnimeDataJSON>;
 }
