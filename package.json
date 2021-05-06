@@ -1,7 +1,7 @@
 {
   "name": "node-4anime-scraper",
   "version": "1.1.2-0",
-  "main": "index.js",
+  "main": "dist/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sb-gravity100/4anime-api-test.git"
@@ -16,13 +16,15 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "type": "tsc",
+    "build": "run-s clean type",
     "watch": "tsc --watch",
     "publish": "np --yolo --no-yarn",
     "docs": "run-s docs:*",
     "docs:1clean": "rimraf ./docs",
     "docs:2transpile": "typedoc",
     "docs:3commit": "git add docs && git commit -m \"Docs updated\" ",
-    "prerelease": "np prerelease --yolo --no-yarn --tag=pre"
+    "prerelease": "np prerelease --yolo --no-yarn --tag=pre",
+    "serve": "serve docs"
   },
   "keywords": [
     "anime",
@@ -34,16 +36,16 @@
     "aigle": "^1.14.1",
     "axios": "^0.21.1",
     "axios-retry": "^3.1.9",
-    "core-js": "^3.10.2",
-    "jsdom": "^16.5.3",
-    "lodash": "^4.17.21"
+    "form-data": "^4.0.0",
+    "lodash": "^4.17.21",
+    "node-html-parser": "^3.2.0"
   },
   "devDependencies": {
-    "@types/jsdom": "^16.2.10",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.41",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
+    "server": "^1.0.32",
     "typescript": "^4.2.4"
   },
   "files": [

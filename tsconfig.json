@@ -3,16 +3,16 @@
         "node_modules/@babel/",
         "./index.js",
         "./index.d.ts",
-        "./src/util/**/*"
+        "./src/interfaces.ts"
     ],
     "include": ["./src/*.ts"],
     "compilerOptions": {
-        "target": "ES5",
+        "target": "ES2015",
         "module": "CommonJS",
         "lib": [],
         "declaration": true,
         "emitDeclarationOnly": false,
-        "sourceMap": true,
+        "sourceMap": false,
         "outDir": "./dist/",
         "strict": false,
         "moduleResolution": "node",
@@ -25,7 +25,7 @@
         "out": "./docs/",
         "entryPoints": ["src/"],
         "name": "4Anime Scraper API",
-        "includeVersion": "false",
+        "includeVersion": false,
         "readme": "./README.md"
     }
 }

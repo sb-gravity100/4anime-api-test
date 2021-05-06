@@ -1,1 +1,1 @@
-module.exports.FourAnime = require('./dist/FourAnime').FourAnime
+module.exports = require('./dist/FourAnime').FourAnime

@@ -137,25 +137,66 @@ class Base {
             return props;
         });
     }
-    /** @protected */
+    /**
+     * @protected
+     * @beta
+     */
     filter_eps(anime, options) {
-        let ep_filter = options.episodes;
-        const testReg = /(-?\d+,?\s?)+/g;
-        ep_filter = ep_filter.match(testReg).join(' ');
-        const filter_arr = ep_filter
-            .replace(',', ' ')
-            .replace(/\s{2,}/g, ' ')
-            .split(' ')
-            .map(e => e.trim());
-        const _include = filter_arr.filter(f => !f.includes('-')).map(Number);
-        const _exclude = filter_arr
-            .filter(f => f.includes('-'))
-            .map(f => Number(f.replace('-', '')));
-        _exclude.length > 0 &&
-            lodash_1.default.remove(anime.hrefs, val => _exclude.includes(val.ep));
-        _include.length > 0 &&
-            lodash_1.default.remove(anime.hrefs, val => !_include.includes(val.ep));
-        return anime.hrefs;
+        let filth = options.episodes;
+        const testReg = /(-\s+)?(\d+,?\s?)+/g;
+        const rangeReg = /\d+-\d+/g;
+        if (filth.match(testReg)) {
+            const ranges = lodash_1.default.chain(filth.match(rangeReg).map(v => {
+                let [a, b] = v.split('-').map(Number);
+                let range;
+                if (lodash_1.default.gt(a, b)) {
+                    if (a > anime.hrefs.length) {
+                        a = anime.hrefs.length;
+                    }
+                    range = lodash_1.default.range(b, a + 1);
+                }
+                else {
+                    if (b > anime.hrefs.length) {
+                        b = anime.hrefs.length;
+                    }
+                    range = lodash_1.default.range(a, b + 1);
+                }
+                return range;
+            }))
+                .flattenDeep()
+                .uniq()
+                .value();
+            filth = filth
+                .replace(/,+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .split(' ')
+                .map(v => {
+                if (Math.abs(v)) {
+                    return Math.abs(v);
+                }
+                return v;
+            })
+                .filter((v, k) => {
+                if (k === 0) {
+                    if (v === '-' || lodash_1.default.isNumber(v)) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (lodash_1.default.isNumber(v)) {
+                    return true;
+                }
+                return false;
+            });
+            filth = lodash_1.default.sortBy(lodash_1.default.concat(filth, ranges).filter(Boolean));
+            if (filth[0] === '-') {
+                lodash_1.default.remove(anime.hrefs, val => filth.includes(val.ep));
+            }
+            else {
+                lodash_1.default.remove(anime.hrefs, val => !filth.includes(val.ep));
+            }
+            return anime.hrefs;
+        }
     }
 }
 exports.Base = Base;

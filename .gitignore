@@ -101,3 +101,5 @@ typings/
 
 # TernJS port file
 .tern-port
+*.sublime-project
+*.sublime-workspace

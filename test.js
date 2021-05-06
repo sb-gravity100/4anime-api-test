@@ -1,10 +1,20 @@
-const { FourAnime } = require('./index.js');
+const FourAnime = require('./index');
+const _ = require('lodash');
 
-const Anime = new FourAnime();
-Anime.on('error', e => console.log(e));
-
-(async () => {
-   const search = await Anime.term('boku no hero')
-   const res = await Anime.episodes(search.shift())
-   console.log(res)
-})()
+// const anime = new FourAnime({
+//    catch: true,
+// });
+//
+// anime
+//    .term('shingeki no kyojin')
+//    .then(async res => {
+//       const anime = await res[0].getAnime({ episodes: '1,2,3,4,5,6,7,8,9,10'})
+//       console.log(anime.toJSON())
+//    })
+//    .catch(e => {
+//       if (e.isAxiosError) {
+//          console.log(e.toJSON());
+//          return;
+//       }
+//       console.log(e);
+//    });

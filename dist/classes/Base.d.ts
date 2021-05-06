@@ -36,6 +36,9 @@ export declare class Base {
         hrefs: IEpisodeHrefs[];
         status: string;
     }>;
-    /** @protected */
+    /**
+     * @protected
+     * @beta
+     */
     protected filter_eps(anime: ISearchJSON, options: IEpisodeOptions): IEpisodeHrefs[];
 }
