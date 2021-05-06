@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAnimeEpisode | 4Anime Scraper API</title>
+	<title>IBase | 4Anime Scraper API</title>
 	<meta name="description" content="Documentation for 4Anime Scraper API">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,28 +58,21 @@
 					<a href="../modules/interfaces.html">interfaces</a>
 				</li>
 				<li>
-					<a href="interfaces.ianimeepisode.html">IAnimeEpisode</a>
+					<a href="interfaces.ibase.html">IBase</a>
 				</li>
 			</ul>
-			<h1>Interface IAnimeEpisode</h1>
+			<h1>Interface IBase</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Data of every episode</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IAnimeEpisode</span>
+						<span class="target">IBase</span>
 					</li>
 				</ul>
 			</section>
@@ -90,10 +83,14 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ianimeepisode.html#ep" class="tsd-kind-icon">ep</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ianimeepisode.html#filename" class="tsd-kind-icon">filename</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ianimeepisode.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ianimeepisode.html#src" class="tsd-kind-icon">src</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ibase.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interfaces.ibase.html#once" class="tsd-kind-icon">once</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="interfaces.ibase.html#episodes" class="tsd-kind-icon">episodes</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,64 +99,53 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ep" class="tsd-anchor"></a>
-					<h3>ep</h3>
-					<div class="tsd-signature tsd-kind-icon">ep<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="on" class="tsd-anchor"></a>
+					<h3>on</h3>
+					<div class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">:</span> <a href="../modules/interfaces.html#tonevent" class="tsd-signature-type" data-tsd-kind="Type alias">TonEvent</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L75">interfaces.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L126">interfaces.ts:126</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Episode number.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="filename" class="tsd-anchor"></a>
-					<h3>filename</h3>
-					<div class="tsd-signature tsd-kind-icon">filename<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="once" class="tsd-anchor"></a>
+					<h3>once</h3>
+					<div class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">:</span> <a href="../modules/interfaces.html#tonevent" class="tsd-signature-type" data-tsd-kind="Type alias">TonEvent</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L77">interfaces.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L127">interfaces.ts:127</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Filename</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L79">interfaces.ts:79</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Anime id based on 4anime.to</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="src" class="tsd-anchor"></a>
-					<h3>src</h3>
-					<div class="tsd-signature tsd-kind-icon">src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L73">interfaces.ts:73</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Url of the source.</p>
-						</div>
-					</div>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="episodes" class="tsd-anchor"></a>
+					<h3>episodes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">episodes<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="interfaces.isearchjson.html" class="tsd-signature-type" data-tsd-kind="Interface">ISearchJSON</a>, options<span class="tsd-signature-symbol">?: </span><a href="interfaces.iepisodeoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">IEpisodeOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces.ianimedatajson.html" class="tsd-signature-type" data-tsd-kind="Interface">IAnimeDataJSON</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/sb-gravity100/node-4anime-scraper/blob/fa640eb/src/interfaces.ts#L128">interfaces.ts:128</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <a href="interfaces.isearchjson.html" class="tsd-signature-type" data-tsd-kind="Interface">ISearchJSON</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="interfaces.iepisodeoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">IEpisodeOptions</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces.ianimedatajson.html" class="tsd-signature-type" data-tsd-kind="Interface">IAnimeDataJSON</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -200,33 +186,30 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="interfaces.ianimedatajson.html" class="tsd-kind-icon">IAnime<wbr>DataJSON</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces.ianimeepisode.html" class="tsd-kind-icon">IAnime<wbr>Episode</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="interfaces.ianimeoptions.html" class="tsd-kind-icon">IAnime<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="interfaces.ianimeepisode.html" class="tsd-kind-icon">IAnime<wbr>Episode</a>
+						<a href="interfaces.ibase.html" class="tsd-kind-icon">IBase</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="interfaces.ianimeepisode.html#ep" class="tsd-kind-icon">ep</a>
+								<a href="interfaces.ibase.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="interfaces.ianimeepisode.html#filename" class="tsd-kind-icon">filename</a>
+								<a href="interfaces.ibase.html#once" class="tsd-kind-icon">once</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="interfaces.ianimeepisode.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="interfaces.ianimeepisode.html#src" class="tsd-kind-icon">src</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="interfaces.ibase.html#episodes" class="tsd-kind-icon">episodes</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="interfaces.ianimeoptions.html" class="tsd-kind-icon">IAnime<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="interfaces.ibase.html" class="tsd-kind-icon">IBase</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="interfaces.iepisodehrefs.html" class="tsd-kind-icon">IEpisode<wbr>Hrefs</a>
 					</li>
@@ -269,6 +252,7 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>

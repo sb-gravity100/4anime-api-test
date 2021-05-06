@@ -58,44 +58,56 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#4anime-api-test" id="4anime-api-test" style="color: inherit; text-decoration: none;">
-					<h1>4anime-api-test</h1>
+				<a href="#node-4anime-scraper" id="node-4anime-scraper" style="color: inherit; text-decoration: none;">
+					<h1>node-4anime-scraper</h1>
 				</a>
 				<p>Fetch <a href="4anime.to"></a> videos and data via <strong>Node</strong>.</p>
 				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
 					<h1>Documentation</h1>
 				</a>
 				<p>Learn more <a href="https://sb-gravity100.github.io/node-4anime-scraper/">here</a></p>
+				<a href="#major-changes" id="major-changes" style="color: inherit; text-decoration: none;">
+					<h2>Major Changes</h2>
+				</a>
+				<ul>
+					<li> Removed <code>Instance.episodes()</code> <a href="#where-is-instanceepisodes">Read here...</a></li>
+					<li> Removed callback functions.</li>
+					<li> Added episode filtering.</li>
+					<li> Results are returned as an Instance, use <a href="#readable"><code>result.toJSON()</code></a></li>
+				</ul>
 				<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
 					<h2>Table of Contents</h2>
 				</a>
 				<ul>
-					<li> <a href="#class">Class</a></li>
-					<li><a href="#search">Search</a><ul>
+					<li> <a href="#basics">Basics</a></li>
+					<li><a href="#search">Term</a><ul>
 							<li> <a href="#output">Output</a></li>
 							<li> <a href="#usage">Usage</a></li>
 						</ul>
 					</li>
-					<li><a href="#episodes">Episodes</a><ul>
-							<li><a href="#output-1">Output</a></li>
-							<li><a href="#usage-1">Usage</a></li>
-						</ul>
-					</li>
 				</ul>
-				<a href="#class" id="class" style="color: inherit; text-decoration: none;">
-					<h2>Class</h2>
+				<a href="#basics" id="basics" style="color: inherit; text-decoration: none;">
+					<h2>Basics</h2>
 				</a>
-				<p><code>new FourAnimeInstance(options: AnimeOptions)</code> - starts a 4Anime instance.</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">FourAnime</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;node-4anime-scraper&#039;</span><span style="color: #000000">);</span>
+				<p><code>new FourAnime(options: AnimeOptions)</code> - starts a 4Anime instance.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">FourAnime</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;node-4anime-scraper&#039;</span><span style="color: #000000">);</span>
 <span style="color: #008000">// Or with imports</span>
 <span style="color: #008000">// import FourAnime from &#039;node-4anime-scraper&#039;</span>
 
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Anime</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FourAnimeInstance</span><span style="color: #000000">({</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Anime</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FourAnime</span><span style="color: #000000">({</span>
 <span style="color: #000000">   </span><span style="color: #001080">catch:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">, </span><span style="color: #008000">// Default is `false`</span>
+<span style="color: #000000">});</span>
+<span style="color: #008000">// Since `catch` is false then all errors will be thrown here...</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, </span><span style="color: #001080">err</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">   </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">err</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;shingeki no kyojin&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">search</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">   </span><span style="color: #008000">// `search` is an array of `SearchResult` instances...</span>
+<span style="color: #000000">   </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">first</span><span style="color: #000000"> = </span><span style="color: #001080">search</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #795E26">toJSON</span><span style="color: #000000">();</span>
+<span style="color: #000000">   </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">last</span><span style="color: #000000"> = </span><span style="color: #001080">search</span><span style="color: #000000">.</span><span style="color: #795E26">pop</span><span style="color: #000000">().</span><span style="color: #795E26">toJSON</span><span style="color: #000000">();</span>
+<span style="color: #000000">   </span><span style="color: #008000">// or</span>
+<span style="color: #000000">   </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">readable</span><span style="color: #000000"> = </span><span style="color: #001080">search</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">s</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">());</span>
 <span style="color: #000000">})</span>
-
-<span style="color: #008000">// Do whatever you want</span>
-<span style="color: #008000">// Anime.term(&#039;jujutsu kaisen&#039;)...</span>
 </code></pre>
 				<a href="#errors" id="errors" style="color: inherit; text-decoration: none;">
 					<h3>Errors</h3>
@@ -106,122 +118,117 @@
 				<a href="#search" id="search" style="color: inherit; text-decoration: none;">
 					<h2>Search</h2>
 				</a>
-				<p><code>Anime.term(s: string, cb?)</code> - search a keyword and returns an array of results.</p>
+				<p><code>Anime.term(s: string)</code></p>
+				<ul>
+					<li> search a string.</li>
+					<li> Returns an array of <code>SearchResult</code> instances.</li>
+				</ul>
 				<a href="#output" id="output" style="color: inherit; text-decoration: none;">
 					<h3>Output</h3>
 				</a>
 				<ul>
-					<li> <code>title</code> - the title of the anime.</li>
-					<li> <code>link</code> - link to it&#39;s site.</li>
-					<li> <code>year</code> - year aired.</li>
-					<li> <code>status</code> - either &#39;Completed&#39; or &#39;Currently Airing&#39;.</li>
+					<li> A <code>SearchResult</code> instance.</li>
 				</ul>
+				<p>See <a href="https://sb-gravity100.github.io/node-4anime-scraper/">Docs...</a></p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h3>Usage</h3>
 				</a>
 				<pre><code class="language-javascript"><span style="color: #008000">// with Promises</span>
 
 <span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">)</span>
-<span style="color: #000000">   .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">results</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #001080">results</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">s</span><span style="color: #000000">) {</span>
-<span style="color: #000000">         </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000">);</span>
-<span style="color: #000000">      });</span>
+<span style="color: #000000">   .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #001080">results</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">()));</span>
 <span style="color: #000000">   })</span>
 <span style="color: #000000">   .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">e</span><span style="color: #000000">) {</span>
 <span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000">);</span>
 <span style="color: #000000">   });</span>
 
-<span style="color: #008000">// with callbacks</span>
-
-<span style="color: #008000">// Set the `catch` option to false...</span>
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, </span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">e</span><span style="color: #000000">) {</span>
-<span style="color: #000000">   </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">, </span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">results</span><span style="color: #000000">) {</span>
-<span style="color: #000000">   </span><span style="color: #001080">results</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">s</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000">);</span>
-<span style="color: #000000">   });</span>
-<span style="color: #000000">});</span>
-
 <span style="color: #008000">// with async/await</span>
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">results</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">);</span>
-<span style="color: #001080">results</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000"> (</span><span style="color: #001080">s</span><span style="color: #000000">) {</span>
-<span style="color: #000000">   </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000">);</span>
-<span style="color: #000000">})</span>
+<span style="color: #001080">results</span><span style="color: #000000">.</span><span style="color: #795E26">forEach</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">s</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">()))</span>
 </code></pre>
-				<hr>
-				<a href="#episodes" id="episodes" style="color: inherit; text-decoration: none;">
-					<h2>Episodes</h2>
+				<a href="#where-is-instanceepisodes" id="where-is-instanceepisodes" style="color: inherit; text-decoration: none;">
+					<h3>Where is <code>Instance.episodes()</code>???</h3>
 				</a>
-				<p><code>Anime.episodes(a: SearchResult, cb?)</code> - get all episodes of an anime.</p>
-				<a href="#output-1" id="output-1" style="color: inherit; text-decoration: none;">
-					<h3>Output</h3>
-				</a>
-				<ul>
-					<li> <code>title</code> - the title of the anime.</li>
-					<li> <code>eps</code> - number of episodes</li>
-					<li> <code>type</code> - &#39;Movie&#39;, &#39;TV Series&#39;, etc.</li>
-					<li> <code>status</code> - either &#39;Completed&#39; or &#39;Currently Airing&#39;.</li>
-					<li> <code>year</code> - year aired.</li>
-					<li><code>data</code> - episode data.<ul>
-							<li> <code>src</code> - link to the source video.</li>
-							<li> <code>ep</code> - episode number.</li>
-							<li> <code>filename</code> - episode filename.</li>
-							<li> <code>id</code> - episode id.</li>
-						</ul>
-					</li>
-				</ul>
-				<a href="#usage-1" id="usage-1" style="color: inherit; text-decoration: none;">
-					<h3>Usage</h3>
-				</a>
-				<pre><code class="language-javascript"><span style="color: #008000">// With Promises</span>
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">) {</span>
-<span style="color: #000000">   </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">episodes</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">]).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">)</span>
-<span style="color: #000000">   }).</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">)</span>
-<span style="color: #000000">}).</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">)</span>
-
-<span style="color: #008000">// With callbacks</span>
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
-
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">, </span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">) {</span>
-<span style="color: #000000">   </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">episodes</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">], </span><span style="color: #0000FF">function</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">)</span>
-<span style="color: #000000">   })</span>
+				<p>On v2, <code>Instance.episodes()</code> is no longer available.</p>
+				<p>Instead use <code>SearchResult.getAnime()</code> to fetch anime data and episode links. The function returns a promise.</p>
+				<pre><code class="language-javascript"><span style="color: #008000">// Promises</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;shingeki&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">   </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">first</span><span style="color: #000000"> = </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">];</span>
+<span style="color: #000000">   </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">().</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Logs an array of episodes</span>
+<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">.</span><span style="color: #795E26">getEpisodes</span><span style="color: #000000">());</span>
+<span style="color: #000000">   });</span>
 <span style="color: #000000">})</span>
 
-<span style="color: #008000">// With async/await</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">results</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;jujutsu kaisen&#039;</span><span style="color: #000000">)</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">anime</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">episodes</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">])</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">)</span>
+<span style="color: #008000">// or with async/await</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">results</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;shingeki&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">first</span><span style="color: #000000"> = </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">]</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">anime</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">()</span>
+<span style="color: #008000">// and so on...</span>
 </code></pre>
+				<a href="#episode-filtering" id="episode-filtering" style="color: inherit; text-decoration: none;">
+					<h3>Episode filtering</h3>
+				</a>
+				<p>This might have bugs or might not work... If there are issues don&#39;t forget to create one.
+				On <code>getAnime()</code>, you can pass an <code>episodes</code> option to filter the episodes.</p>
+				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">results</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;shingeki&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">first</span><span style="color: #000000"> = </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">]</span>
+<span style="color: #008000">// Get the episodes we want</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">filtered_episodes</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">({ </span><span style="color: #001080">episodes:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;11, 12, 13&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #008000">// Remove the episodes we already watched add a `-` at the beginning.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">removed_episodes</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">({ </span><span style="color: #001080">episodes:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;- 1, 2, 3&quot;</span><span style="color: #000000"> })</span>
+<span style="color: #008000">// You can use spaces instead of commas.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">removed_episodes</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">({</span>
+<span style="color: #000000">   </span><span style="color: #008000">// It will ignore the whitespaces</span>
+<span style="color: #000000">   </span><span style="color: #001080">episodes:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;-1 2 3      5&quot;</span>
+<span style="color: #000000">})</span>
+</code></pre>
+				<p>What is does is it replaces commas with whitespaces and replaces multiple whitespaces with a single one...</p>
+				<blockquote>
+					<p><code>&quot;1, 2, 4, ..whitespaces.... 6 ... 10&quot;</code> to...<br><code>&quot;1  2  4 ..whitespaces.... 6    10&quot;</code> to...<br><code>&quot;1 2 4 6 10</code> to...<br><code>[1,2,4,6,10]</code></p>
+				</blockquote>
 				<a href="#error-handling" id="error-handling" style="color: inherit; text-decoration: none;">
 					<h2>Error Handling</h2>
 				</a>
 				<p>By default, the instance will emit an &#39;error&#39; event on errors. If you wanna use the catch block then set the <code>catch</code> option to true.</p>
 				<pre><code class="language-javascript"><span style="color: #008000">// `catch` is false by default.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Anime</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FourAnime</span><span style="color: #000000">()</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Anime</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FourAnime</span><span style="color: #000000">();</span>
 
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">)</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">, </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 
 <span style="color: #008000">// This will throw an error event...</span>
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Something that doesn</span><span style="color: #EE0000">\&#039;</span><span style="color: #A31515">t exist&#039;</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Something that doesn&#039;t exist&quot;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">res</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
 <span style="color: #000000">   </span><span style="color: #008000">// `res` is null...</span>
-<span style="color: #000000">})</span>
+<span style="color: #000000">});</span>
 
 <span style="color: #008000">// If `catch` is set to true</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">Anime</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">FourAnime</span><span style="color: #000000">({</span>
-<span style="color: #000000">   </span><span style="color: #001080">catch:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span>
-<span style="color: #000000">})</span>
-<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Something that doesn</span><span style="color: #EE0000">\&#039;</span><span style="color: #A31515">t exist&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">res</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">   </span><span style="color: #008000">// `res` is null</span>
-<span style="color: #000000">}).</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">   </span><span style="color: #008000">// Do something about the error...</span>
-<span style="color: #000000">})</span>
+<span style="color: #000000">   </span><span style="color: #001080">catch:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">});</span>
+<span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Something that doesn&#039;t exist&quot;</span><span style="color: #000000">)</span>
+<span style="color: #000000">   .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">res</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// `res` is null</span>
+<span style="color: #000000">   })</span>
+<span style="color: #000000">   .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">e</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Do something about the error...</span>
+<span style="color: #000000">   })</span>
 </code></pre>
 				<hr>
+				<a href="#readable" id="readable" style="color: inherit; text-decoration: none;">
+					<h2>Readable</h2>
+				</a>
+				<p><code>Instance.term()</code> and <code>SearchResult.getAnime()</code> returns an instance.
+				To make it much readable, use <code>toJSON()</code></p>
+				<pre><code class="language-javascript"><span style="color: #001080">Anime</span><span style="color: #000000">.</span><span style="color: #795E26">term</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;shingeki&#039;</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">   </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">first</span><span style="color: #000000"> = </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">];</span>
+<span style="color: #000000">   </span><span style="color: #001080">first</span><span style="color: #000000">.</span><span style="color: #795E26">getAnime</span><span style="color: #000000">().</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">anime</span><span style="color: #000000">.</span><span style="color: #795E26">toJSON</span><span style="color: #000000">())</span>
+<span style="color: #000000">   })</span>
+<span style="color: #000000">})</span>
+</code></pre>
 				<p><strong>Thnx</strong></p>
 			</div>
 		</div>
@@ -235,10 +242,19 @@
 						<a href="modules/fouranime.html">Four<wbr>Anime</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/interfaces.html">interfaces</a>
+						<a href="modules/classes.html">classes</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/libs_search_results.html">libs/search_<wbr>results</a>
+						<a href="modules/classes_base.html">classes/<wbr>Base</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/classes_episodes.html">classes/<wbr>Episodes</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/classes_search_result.html">classes/<wbr>Search_<wbr><wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/interfaces.html">interfaces</a>
 					</li>
 				</ul>
 			</nav>
