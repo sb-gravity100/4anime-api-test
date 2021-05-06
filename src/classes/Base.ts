@@ -157,24 +157,65 @@ export class Base {
       };
       return props;
    }
-   /** @protected */
+   /**
+    * @protected
+    * @beta
+    */
    protected filter_eps(anime: ISearchJSON, options: IEpisodeOptions) {
-      let ep_filter = options.episodes;
-      const testReg = /(-?\d+,?\s?)+/g;
-      ep_filter = ep_filter.match(testReg).join(' ');
-      const filter_arr = ep_filter
-         .replace(',', ' ')
-         .replace(/\s{2,}/g, ' ')
-         .split(' ')
-         .map(e => e.trim());
-      const _include = filter_arr.filter(f => !f.includes('-')).map(Number);
-      const _exclude = filter_arr
-         .filter(f => f.includes('-'))
-         .map(f => Number(f.replace('-', '')));
-      _exclude.length > 0 &&
-         _.remove(anime.hrefs, val => _exclude.includes(val.ep));
-      _include.length > 0 &&
-         _.remove(anime.hrefs, val => !_include.includes(val.ep));
-      return anime.hrefs;
+      let filth: any = options.episodes;
+      const testReg = /(-\s+)?(\d+,?\s?)+/g;
+      const rangeReg = /\d+-\d+/g;
+      if (filth.match(testReg)) {
+         const ranges = _.chain(
+            filth.match(rangeReg).map(v => {
+               let [a, b] = v.split('-').map(Number);
+               let range: number[];
+               if (_.gt(a, b)) {
+                  if (a > anime.hrefs.length) {
+                     a = anime.hrefs.length;
+                  }
+                  range = _.range(b, a + 1);
+               } else {
+                  if (b > anime.hrefs.length) {
+                     b = anime.hrefs.length;
+                  }
+                  range = _.range(a, b + 1);
+               }
+               return range;
+            })
+         )
+            .flattenDeep()
+            .uniq()
+            .value();
+         filth = filth
+            .replace(/,+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .split(' ')
+            .map(v => {
+               if (Math.abs(v)) {
+                  return Math.abs(v);
+               }
+               return v;
+            })
+            .filter((v, k) => {
+               if (k === 0) {
+                  if (v === '-' || _.isNumber(v)) {
+                     return true;
+                  }
+                  return false;
+               }
+               if (_.isNumber(v)) {
+                  return true;
+               }
+               return false;
+            });
+         filth = _.sortBy(_.concat(filth, ranges).filter(Boolean));
+         if (filth[0] === '-') {
+            _.remove(anime.hrefs, val => filth.includes(val.ep));
+         } else {
+            _.remove(anime.hrefs, val => !filth.includes(val.ep));
+         }
+         return anime.hrefs;
+      }
    }
 }

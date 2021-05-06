@@ -9,6 +9,9 @@ import {
 } from '../interfaces';
 import { Base } from './Base';
 
+/**
+ * A search result instance
+ */
 export class SearchResult extends Base implements ISearchResult {
    readonly title: string;
    readonly main: string;

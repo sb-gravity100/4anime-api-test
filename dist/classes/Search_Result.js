@@ -11,6 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchResult = void 0;
 const Base_1 = require("./Base");
+/**
+ * A search result instance
+ */
 class SearchResult extends Base_1.Base {
     constructor(props) {
         super();

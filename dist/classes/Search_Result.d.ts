@@ -1,5 +1,8 @@
 import { ISearchResult, IEpisodeHrefs, TAnimeType, TAnimeStatus, IEpisodeOptions, IAnimeData, ISearchJSON } from '../interfaces';
 import { Base } from './Base';
+/**
+ * A search result instance
+ */
 export declare class SearchResult extends Base implements ISearchResult {
     readonly title: string;
     readonly main: string;
