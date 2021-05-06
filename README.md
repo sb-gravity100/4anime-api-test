@@ -1,4 +1,4 @@
-# 4anime-api-test
+# node-4anime-scraper
 
 Fetch [](4anime.to) videos and data via **Node**.
 
@@ -6,31 +6,43 @@ Fetch [](4anime.to) videos and data via **Node**.
 
 Learn more [here](https://sb-gravity100.github.io/node-4anime-scraper/)
 
+## Major Changes
+
+-  Removed `Instance.episodes()` [Read here...](#where-is-instanceepisodes)
+-  Removed callback functions.
+-  Added episode filtering.
+-  Results are returned as an Instance, use [`result.toJSON()`](#readable)
+
 ## Table of Contents
 
--  [Class](#class)
--  [Search](#search)
+-  [Basics](#basics)
+-  [Term](#search)
    -  [Output](#output)
    -  [Usage](#usage)
--  [Episodes](#episodes)
-   - [Output](#output-1)
-   - [Usage](#usage-1)
 
-## Class
+## Basics
 
-`new FourAnimeInstance(options: AnimeOptions)` - starts a 4Anime instance.
+`new FourAnime(options: AnimeOptions)` - starts a 4Anime instance.
 
 ```javascript
-const { FourAnime } = require('node-4anime-scraper');
+const FourAnime = require('node-4anime-scraper');
 // Or with imports
 // import FourAnime from 'node-4anime-scraper'
 
-const Anime = new FourAnimeInstance({
+const Anime = new FourAnime({
    catch: false, // Default is `false`
+});
+// Since `catch` is false then all errors will be thrown here...
+Anime.on('error', err => {
+   console.log(err);
+});
+Anime.term('shingeki no kyojin').then(search => {
+   // `search` is an array of `SearchResult` instances...
+   const first = search[0].toJSON();
+   const last = search.pop().toJSON();
+   // or
+   const readable = search.map(s => s.toJSON());
 })
-
-// Do whatever you want
-// Anime.term('jujutsu kaisen')...
 ```
 
 ### Errors
@@ -43,14 +55,16 @@ If the `catch` option is set to true then it will throw errors on the catch func
 
 ## Search
 
-`Anime.term(s: string, cb?)` - search a keyword and returns an array of results.
+`Anime.term(s: string)`
+
+-  search a string.
+-  Returns an array of `SearchResult` instances.
 
 ### Output
 
--  `title` - the title of the anime.
--  `link` - link to it's site.
--  `year` - year aired.
--  `status` - either 'Completed' or 'Currently Airing'.
+-  A `SearchResult` instance.
+
+See [Docs...](https://sb-gravity100.github.io/node-4anime-scraper/)
 
 ### Usage
 
@@ -58,79 +72,67 @@ If the `catch` option is set to true then it will throw errors on the catch func
 // with Promises
 
 Anime.term('jujutsu kaisen')
-   .then(function (results) {
-      results.forEach(function (s) {
-         console.log(s.link);
-      });
+   .then(results => {
+      results.forEach(e => console.log(e.toJSON()));
    })
    .catch(function (e) {
       console.error(e);
    });
 
-// with callbacks
-
-// Set the `catch` option to false...
-Anime.on('error', function (e) {
-   console.error(e);
-});
-
-Anime.term('jujutsu kaisen', function (results) {
-   results.forEach(function (s) {
-      console.log(s.link);
-   });
-});
-
 // with async/await
 
 const results = await Anime.term('jujutsu kaisen');
-results.forEach(function (s) {
-   console.log(s.link);
-})
+results.forEach(s => console.log(s.toJSON()))
 ```
 
----
+### Where is `Instance.episodes()`???
 
-## Episodes
+On v2, `Instance.episodes()` is no longer available.
 
-`Anime.episodes(a: SearchResult, cb?)` - get all episodes of an anime.
+Instead use `SearchResult.getAnime()` to fetch anime data and episode links. The function returns a promise.
+```javascript
+// Promises
+Anime.term('shingeki').then(results => {
+   const first = results[0];
+   first.getAnime().then(anime => {
+      // Logs an array of episodes
+      console.log(anime.getEpisodes());
+   });
+})
 
-### Output
+// or with async/await
 
--  `title` - the title of the anime.
--  `eps` - number of episodes
--  `type` - 'Movie', 'TV Series', etc.
--  `status` - either 'Completed' or 'Currently Airing'.
--  `year` - year aired.
--  `data` - episode data.
-   -  `src` - link to the source video.
-   -  `ep` - episode number.
-   -  `filename` - episode filename.
-   -  `id` - episode id.
+const results = await Anime.term('shingeki')
+const first = results[0]
+const anime = await first.getAnime()
+// and so on...
+```
 
-### Usage
+### Episode filtering
+
+This might have bugs or might not work... If there are issues don't forget to create one.
+On `getAnime()`, you can pass an `episodes` option to filter the episodes.
 
 ```javascript
-// With Promises
-Anime.term('jujutsu kaisen').then(function(results) {
-   Anime.episodes(results[0]).then(function(anime) {
-      console.log(anime)
-   }).catch(console.error)
-}).catch(console.error)
-
-// With callbacks
-Anime.on('error', console.error);
-
-Anime.term('jujutsu kaisen', function(results) {
-   Anime.episodes(results[0], function(anime) {
-      console.log(anime)
-   })
+const results = await Anime.term('shingeki')
+const first = results[0]
+// Get the episodes we want
+const filtered_episodes = await first.getAnime({ episodes: "11, 12, 13" })
+// Remove the episodes we already watched add a `-` at the beginning.
+const removed_episodes = await first.getAnime({ episodes: "- 1, 2, 3" })
+// You can use spaces instead of commas.
+const removed_episodes = await first.getAnime({
+   // It will ignore the whitespaces
+   episodes: "-1 2 3      5"
 })
-
-// With async/await
-const results = await Anime.term('jujutsu kaisen')
-const anime = await Anime.episodes(results[0])
-console.log(anime)
 ```
+
+What is does is it replaces commas with whitespaces and replaces multiple whitespaces with a single one...
+
+> ```"1, 2, 4, ..whitespaces.... 6 ... 10"``` to...  
+> ```"1  2  4 ..whitespaces.... 6    10"``` to...  
+> ```"1 2 4 6 10``` to...  
+> ```[1,2,4,6,10]```
 
 ## Error Handling
 
@@ -138,25 +140,42 @@ By default, the instance will emit an 'error' event on errors. If you wanna use 
 
 ```javascript
 // `catch` is false by default.
-const Anime = new FourAnime()
+const Anime = new FourAnime();
 
-Anime.on('error', console.error)
+Anime.on('error', console.error);
 
 // This will throw an error event...
-Anime.term('Something that doesn\'t exist', res => {
+Anime.term("Something that doesn't exist").then(res => {
    // `res` is null...
-})
+});
 
 // If `catch` is set to true
 const Anime = new FourAnime({
-   catch: true
-})
-Anime.term('Something that doesn\'t exist').then(res => {
-   // `res` is null
-}).catch(e => {
-   // Do something about the error...
-})
+   catch: true,
+});
+Anime.term("Something that doesn't exist")
+   .then(res => {
+      // `res` is null
+   })
+   .catch(e => {
+      // Do something about the error...
+   })
 ```
+
 ---
 
-__Thnx__
+## Readable
+
+`Instance.term()` and `SearchResult.getAnime()` returns an instance.
+To make it much readable, use `toJSON()`
+
+```javascript
+Anime.term('shingeki').then(results => {
+   const first = results[0];
+   first.getAnime().then(anime => {
+      console.log(anime.toJSON())
+   })
+})
+```
+
+**Thnx**
