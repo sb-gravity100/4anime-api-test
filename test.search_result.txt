@@ -1,0 +1,72 @@
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin">Shingeki no Kyojin</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/tv-series">TV Series</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2013">2013</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/drama">Drama</a>, <a href="/genre/fantasy">Fantasy</a>                    </div>
+    </div>
+</div>
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin-OVA.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin-ova">Shingeki no Kyojin OVA</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/ova">OVA</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2013">2013</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/drama">Drama</a>, <a href="/genre/fantasy">Fantasy</a>                    </div>
+    </div>
+</div>
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin-Season-2.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin-season-2">Shingeki no Kyojin Season 2</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/tv-series">TV Series</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2017">2017</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/drama">Drama</a>, <a href="/genre/fantasy">Fantasy</a>                    </div>
+    </div>
+</div>
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin-S3-Cover.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin-season-3">Shingeki no Kyojin Season 3</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/tv-series">TV Series</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2018">2018</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/drama">Drama</a>, <a href="/genre/fantasy">Fantasy</a>                    </div>
+    </div>
+</div>
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin-Season-3-Part-2.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin-season-3-part-2">Shingeki no Kyojin Season 3 Part 2</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/tv-series">TV Series</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2019">2019</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/drama">Drama</a>, <a href="/genre/fantasy">Fantasy</a>                    </div>
+    </div>
+</div>
+<div class="item ">
+    <img class="thumb" src="/image/Shingeki-no-Kyojin-Kuinaki-Sentaku.jpg">
+    <div class="info">
+        <a class="name" href="https://4anime.to/anime/shingeki-no-kyojin-kuinaki-sentaku">Shingeki no Kyojin: Kuinaki Sentaku</a>
+        <div class="meta">
+            <span><span class="year">Type: </span><span class="yearzi"><a href="/type/ova">OVA</a></span></span>
+            <span><span class="year">Release: </span><span class="yearzi"><a href="/year/2014">2014</a></span></span>
+        </div>
+                <div class="genre">
+                        <a href="/genre/action">Action</a>, <a href="/genre/fantasy">Fantasy</a>, <a href="/genre/shoujo">Shoujo</a>                    </div>
+    </div>
+</div>
