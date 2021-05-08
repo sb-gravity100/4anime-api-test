@@ -58,6 +58,26 @@ class FourAnime extends classes_1.Base {
     constructor(options) {
         super(options);
     }
+    // /**
+    // * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#eventsemitter_on_eventname_listener
+    // }
+    // */
+    // public on(
+    //    event: string | symbol,
+    //    listener: (...args: any[]) => void
+    // ): EventEmitter {
+    //    return this.on(event, listener)
+    // }
+    // /**
+    // * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#eventsemitter_once_eventname_listener
+    // }
+    // */
+    // public once(
+    //    event: string | symbol,
+    //    listener: (...args: any[]) => void
+    // ): EventEmitter {
+    //    return this.once(event, listener)
+    // }
     /**
      * Search an anime by a term.
      * @param {string} s - string to search for.
@@ -99,7 +119,7 @@ class FourAnime extends classes_1.Base {
                     throw e;
                 }
                 else {
-                    this._emit('error', e);
+                    this.emit('error', e);
                     return null;
                 }
             }

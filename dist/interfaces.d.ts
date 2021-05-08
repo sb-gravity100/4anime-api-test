@@ -2,9 +2,7 @@
 export declare type TAnimeStatus = 'Completed' | 'Currently Airing' | string;
 /** 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' */
 export declare type TAnimeType = 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' | string;
-export declare type TonEvent = (event: string | symbol, listener: (...args: any[]) => void) => void;
 export declare type TClassEvents = 'error' | 'loaded';
-export declare type TemitEvent = (event: string | symbol, ...args: any[]) => void;
 export declare type TSearchProperties = 'title' | 'main' | 'type' | 'year' | 'genres' | 'href' | 'status';
 /** Search data */
 export interface ISearchResult {
@@ -95,7 +93,6 @@ export interface I4Anime {
     term(s: string): Promise<ISearchResult[]>;
 }
 export interface IBase {
-    on: TonEvent;
-    once: TonEvent;
-    episodes(a: ISearchJSON, options?: IEpisodeOptions): Promise<IAnimeDataJSON>;
+    on(event: string | symbol | TClassEvents, listener: (...args: any[]) => void): any;
+    once(event: string | symbol | TClassEvents, listener: (...args: any[]) => void): any;
 }

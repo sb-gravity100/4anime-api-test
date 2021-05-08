@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events'
+
 /** 'Completed' | 'Currently Airing' */
 export type TAnimeStatus = 'Completed' | 'Currently Airing' | string;
 /** 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' */
@@ -8,12 +10,7 @@ export type TAnimeType =
    | 'Special'
    | 'ONA'
    | string;
-export type TonEvent = (
-   event: string | symbol,
-   listener: (...args: any[]) => void
-) => void;
 export type TClassEvents = 'error' | 'loaded';
-export type TemitEvent = (event: string | symbol, ...args: any[]) => void;
 export type TSearchProperties =
    | 'title'
    | 'main'
@@ -117,16 +114,16 @@ export interface IAnimeOptions {
 
 /** Interface of the FourAnime class. */
 export interface I4Anime {
-   term(
-      s: string,
-   ): Promise<ISearchResult[]>;
+   term(s: string): Promise<ISearchResult[]>;
 }
 
 export interface IBase {
-   on: TonEvent;
-   once: TonEvent;
-   episodes(
-      a: ISearchJSON,
-      options?: IEpisodeOptions,
-   ): Promise<IAnimeDataJSON>;
+   on(
+      event: string | symbol | TClassEvents,
+      listener: (...args: any[]) => void
+   ): any;
+   once(
+      event: string | symbol | TClassEvents,
+      listener: (...args: any[]) => void
+   ): any;
 }

@@ -5,6 +5,7 @@ import { Aigle } from 'aigle';
 import axiosRetry from 'axios-retry';
 import FormData from 'form-data';
 import { Base, SearchResult } from './classes';
+import { EventEmitter } from 'events'
 import { I4Anime, IAnimeOptions, ISearchResult, ISearchJSON } from './interfaces';
 
 axiosRetry(axios, {
@@ -28,6 +29,28 @@ export class FourAnime extends Base implements I4Anime {
       super(options);
    }
 
+   // /**
+   // * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#eventsemitter_on_eventname_listener
+   // }
+   // */
+   // public on(
+   //    event: string | symbol,
+   //    listener: (...args: any[]) => void
+   // ): EventEmitter {
+   //    return this.on(event, listener)
+   // }
+
+   // /**
+   // * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#eventsemitter_once_eventname_listener
+   // }
+   // */
+   // public once(
+   //    event: string | symbol,
+   //    listener: (...args: any[]) => void
+   // ): EventEmitter {
+   //    return this.once(event, listener)
+   // }
+   
    /**
     * Search an anime by a term.
     * @param {string} s - string to search for.
@@ -81,7 +104,7 @@ export class FourAnime extends Base implements I4Anime {
          if (this._catch) {
             throw e;
          } else {
-            this._emit('error', e);
+            this.emit('error', e);
             return null;
          }
       }

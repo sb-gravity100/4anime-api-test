@@ -6,10 +6,10 @@ import {
    IAnimeEpisode,
    IEpisodeOptions,
    ISearchJSON,
-   TonEvent,
-   TemitEvent,
    IAnimeOptions,
+   TClassEvents,
    IAnimeDataJSON,
+   IBase
 } from '../interfaces';
 import { parse, HTMLElement } from 'node-html-parser';
 import axios from 'axios';
@@ -18,7 +18,7 @@ import { EventEmitter } from 'events';
 import { URL } from 'url';
 import path from 'path';
 import { Aigle } from 'aigle';
-import fs from 'fs';
+// import fs from 'fs';
 import axiosRetry from 'axios-retry';
 import { EpisodesData } from './Episodes';
 
@@ -26,38 +26,20 @@ axiosRetry(axios, {
    retries: 3,
 });
 
-const events = new EventEmitter();
-
-export class Base {
+export class Base extends EventEmitter implements IBase {
    /**
     * @defaultValue false
     * @readonly
     */
    protected _catch: boolean;
-   /**
-   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_on_eventname_listener
-   }
-   */
-   public on: TonEvent;
-   /**
-   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_once_eventname_listener
-   }
-   */
-   public once: TonEvent;
-   /**
-   * @see {@link https://nodejs.org/download/release/v13.14.0/docs/api/events.html#events_emitter_emit_eventname_args
-   }
-   */
-   protected _emit: TemitEvent;
 
    constructor(options?: IAnimeOptions) {
+      super();
       if (options) {
          this._catch = options.catch || false;
       }
-      this.on = events.on;
-      this.once = events.once;
-      this._emit = events.emit;
    }
+
    /** @protected */
    protected async episodes(
       anime: ISearchJSON,
@@ -82,7 +64,7 @@ export class Base {
          if (this._catch) {
             throw e;
          } else {
-            this._emit('error', e);
+            this.emit('error', e);
             return null;
          }
       }
@@ -103,7 +85,7 @@ export class Base {
                document.querySelector('.episodes.range.active .active')
                   .textContent
             );
-            this._emit('loaded', e.ep, hrefs.length);
+            this.emit('loaded', e.ep, hrefs.length);
             return {
                ep,
                id,
@@ -119,13 +101,13 @@ export class Base {
          if (this._catch) {
             throw e;
          } else {
-            this._emit('error', e);
+            this.emit('error', e);
             return null;
          }
       }
    }
    /** @protected */
-   protected async _search(item: HTMLElement) {
+   protected async _search(item: HTMLElement): Promise<ISearchJSON> {
       const _name = item.querySelector('.name');
       const _meta = item.querySelectorAll('.meta .yearzi');
       const main: string = _name.getAttribute('href');
@@ -161,13 +143,19 @@ export class Base {
     * @protected
     * @beta
     */
-   protected filter_eps(anime: ISearchJSON, options: IEpisodeOptions) {
+   protected filter_eps(
+      anime: ISearchJSON,
+      options: IEpisodeOptions
+   ): IEpisodeHrefs[] {
       let filth: any = options.episodes;
       const testReg = /(-\s*)?(\d+,*\s*)+/g;
       const rangeReg = /\d+-\d+/g;
+      if (!options.episodes) {
+         return anime.hrefs;
+      }
       if (filth.match(testReg)) {
          const ranges = _.chain(
-            filth.match(rangeReg).map(v => {
+            filth.match(rangeReg).map((v: any) => {
                let [a, b] = v.split('-').map(Number);
                let range: number[];
                if (_.gt(a, b)) {
@@ -191,13 +179,13 @@ export class Base {
             .replace(/,+/g, ' ')
             .replace(/\s+/g, ' ')
             .split(' ')
-            .map(v => {
+            .map((v: any) => {
                if (Math.abs(v)) {
                   return Math.abs(v);
                }
                return v;
             })
-            .filter((v, k) => {
+            .filter((v: any, k: any) => {
                if (k === 0) {
                   if (v === '-' || _.isNumber(v)) {
                      return true;

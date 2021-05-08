@@ -20,20 +20,18 @@ const events_1 = require("events");
 const url_1 = require("url");
 const path_1 = __importDefault(require("path"));
 const aigle_1 = require("aigle");
+// import fs from 'fs';
 const axios_retry_1 = __importDefault(require("axios-retry"));
 const Episodes_1 = require("./Episodes");
 axios_retry_1.default(axios_1.default, {
     retries: 3,
 });
-const events = new events_1.EventEmitter();
-class Base {
+class Base extends events_1.EventEmitter {
     constructor(options) {
+        super();
         if (options) {
             this._catch = options.catch || false;
         }
-        this.on = events.on;
-        this.once = events.once;
-        this._emit = events.emit;
     }
     /** @protected */
     episodes(anime, options) {
@@ -59,7 +57,7 @@ class Base {
                     throw e;
                 }
                 else {
-                    this._emit('error', e);
+                    this.emit('error', e);
                     return null;
                 }
             }
@@ -80,7 +78,7 @@ class Base {
                     const filename = path_1.default.basename(src);
                     const ep = Number(document.querySelector('.episodes.range.active .active')
                         .textContent);
-                    this._emit('loaded', e.ep, hrefs.length);
+                    this.emit('loaded', e.ep, hrefs.length);
                     return {
                         ep,
                         id,
@@ -96,7 +94,7 @@ class Base {
                     throw e;
                 }
                 else {
-                    this._emit('error', e);
+                    this.emit('error', e);
                     return null;
                 }
             }
@@ -143,10 +141,13 @@ class Base {
      */
     filter_eps(anime, options) {
         let filth = options.episodes;
-        const testReg = /(-\s+)?(\d+,?\s?)+/g;
+        const testReg = /(-\s*)?(\d+,*\s*)+/g;
         const rangeReg = /\d+-\d+/g;
+        if (!options.episodes) {
+            return anime.hrefs;
+        }
         if (filth.match(testReg)) {
-            const ranges = lodash_1.default.chain(filth.match(rangeReg).map(v => {
+            const ranges = lodash_1.default.chain(filth.match(rangeReg).map((v) => {
                 let [a, b] = v.split('-').map(Number);
                 let range;
                 if (lodash_1.default.gt(a, b)) {
@@ -170,7 +171,7 @@ class Base {
                 .replace(/,+/g, ' ')
                 .replace(/\s+/g, ' ')
                 .split(' ')
-                .map(v => {
+                .map((v) => {
                 if (Math.abs(v)) {
                     return Math.abs(v);
                 }
