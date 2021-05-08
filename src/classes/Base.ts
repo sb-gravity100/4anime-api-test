@@ -163,7 +163,7 @@ export class Base {
     */
    protected filter_eps(anime: ISearchJSON, options: IEpisodeOptions) {
       let filth: any = options.episodes;
-      const testReg = /(-\s+)?(\d+,?\s?)+/g;
+      const testReg = /(-\s*)?(\d+,*\s*)+/g;
       const rangeReg = /\d+-\d+/g;
       if (filth.match(testReg)) {
          const ranges = _.chain(
