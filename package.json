@@ -18,7 +18,7 @@
     "type": "tsc",
     "build": "run-s clean type",
     "watch": "tsc --watch",
-    "publish": "np --yolo --no-yarn",
+    "release": "np --yolo --no-yarn",
     "docs": "run-s docs:*",
     "docs:1clean": "rimraf ./docs",
     "docs:2transpile": "typedoc",
