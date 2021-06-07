@@ -1,0 +1,7 @@
+{
+   "out": "./docs/",
+   "entryPoints": ["src/"],
+   "name": "4Anime Scraper API",
+   "includeVersion": false,
+   "readme": "./README.md"
+}

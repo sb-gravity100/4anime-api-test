@@ -7,9 +7,8 @@
     ],
     "include": ["./src/*.ts"],
     "compilerOptions": {
-        "target": "ES2015",
+        "target": "ES2017",
         "module": "CommonJS",
-        "lib": [],
         "declaration": true,
         "emitDeclarationOnly": false,
         "sourceMap": false,
@@ -20,12 +19,5 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": false
-    },
-    "typedocOptions": {
-        "out": "./docs/",
-        "entryPoints": ["src/"],
-        "name": "4Anime Scraper API",
-        "includeVersion": false,
-        "readme": "./README.md"
     }
 }
