@@ -1,6 +1,6 @@
-import { IAnimeData, IAnimeDataJSON, IAnimeEpisode } from '../interfaces';
+import { IAnimeDataJSON, IAnimeEpisode } from '../interfaces';
 
-export class EpisodesData implements IAnimeData {
+export class EpisodesData {
    protected _title: string;
    protected _eps: number;
    protected _type: string;
@@ -45,7 +45,7 @@ export class EpisodesData implements IAnimeData {
    getEpisodes(): IAnimeEpisode[] {
       return this._data;
    }
-   toJSON(): IAnimeDataJSON {
+   get(): IAnimeDataJSON {
       return this._props;
    }
 }

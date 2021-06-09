@@ -1,18 +1,17 @@
 import {
-   ISearchResult,
    IEpisodeHrefs,
    TAnimeType,
    TAnimeStatus,
    IEpisodeOptions,
-   IAnimeData,
    ISearchJSON,
 } from '../interfaces';
 import { Base } from './Base';
+import { EpisodesData } from './Episodes';
 
 /**
  * A search result instance
  */
-export class SearchResult extends Base implements ISearchResult {
+export class SearchResult extends Base {
    readonly title: string;
    readonly main: string;
    readonly type: TAnimeType;
@@ -32,11 +31,11 @@ export class SearchResult extends Base implements ISearchResult {
     * @param {IEpisodeOptions} [options] - pass options.
     * @returns {Promise<IAnimeData>} a promise
     */
-   async getAnime(options?: IEpisodeOptions): Promise<IAnimeData> {
-      return await this.episodes(this.toJSON(), options);
+   getAnime(options?: IEpisodeOptions): Promise<EpisodesData> {
+      return this.episodes(this.get(), options);
    }
 
-   toJSON(): ISearchJSON {
+   get(): ISearchJSON {
       const __s_r: ISearchJSON = {
          title: this.title,
          main: this.main,

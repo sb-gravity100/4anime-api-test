@@ -2,14 +2,11 @@ import {
    TAnimeType,
    IEpisodeHrefs,
    TAnimeStatus,
-   IAnimeData,
    IAnimeEpisode,
    IEpisodeOptions,
    ISearchJSON,
-   IAnimeOptions,
    TClassEvents,
    IAnimeDataJSON,
-   IBase
 } from '../interfaces';
 import { parse, HTMLElement } from 'node-html-parser';
 import axios from 'axios';
@@ -26,25 +23,22 @@ axiosRetry(axios, {
    retries: 3,
 });
 
-export class Base extends EventEmitter implements IBase {
+export class Base extends EventEmitter {
    /**
     * @defaultValue false
     * @readonly
     */
    protected _catch: boolean;
 
-   constructor(options?: IAnimeOptions) {
+   constructor() {
       super();
-      if (options) {
-         this._catch = options.catch || false;
-      }
    }
 
    /** @protected */
    protected async episodes(
       anime: ISearchJSON,
       options?: IEpisodeOptions
-   ): Promise<IAnimeData> {
+   ): Promise<EpisodesData> {
       options = _.merge({}, options);
       try {
          if (options.episodes && Number(options.episodes) !== 0) {
@@ -105,39 +99,6 @@ export class Base extends EventEmitter implements IBase {
             return null;
          }
       }
-   }
-   /** @protected */
-   protected async _search(item: HTMLElement): Promise<ISearchJSON> {
-      const _name = item.querySelector('.name');
-      const _meta = item.querySelectorAll('.meta .yearzi');
-      const main: string = _name.getAttribute('href');
-      const title: string = _name.textContent;
-      const type: TAnimeType | string = _meta[0].textContent;
-      const year: string = _meta[1].textContent;
-      const genres: string[] = item
-         .querySelectorAll('.genre a')
-         .map(a => a.textContent);
-      const anime = parse((await axios.get(main)).data);
-      const hrefs: IEpisodeHrefs[] = anime
-         .querySelectorAll('ul.episodes a')
-         .map(a => ({
-            href: a.getAttribute('href'),
-            ep: Number(a.textContent),
-         }))
-         .sort((a, b) => a.ep - b.ep);
-      const status: TAnimeStatus | string = anime
-         .querySelectorAll('.details .detail')[3]
-         .querySelector('a').textContent;
-      const props = {
-         title,
-         main,
-         type,
-         year,
-         genres,
-         hrefs,
-         status,
-      };
-      return props;
    }
    /**
     * @protected
