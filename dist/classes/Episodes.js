@@ -36,7 +36,10 @@ class EpisodesData {
         return this._data;
     }
     get() {
-        return this._props;
+        return Object.assign({}, this._props);
+    }
+    toJSON() {
+        return Object.assign({}, this._props);
     }
 }
 exports.EpisodesData = EpisodesData;

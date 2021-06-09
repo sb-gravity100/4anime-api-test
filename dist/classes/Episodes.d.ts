@@ -19,4 +19,5 @@ export declare class EpisodesData {
     get props(): IAnimeDataJSON;
     getEpisodes(): IAnimeEpisode[];
     get(): IAnimeDataJSON;
+    toJSON(): IAnimeDataJSON;
 }

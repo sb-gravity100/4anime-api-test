@@ -47,4 +47,16 @@ export class SearchResult extends Base {
       };
       return __s_r;
    }
+   toJSON(): ISearchJSON {
+      const __s_r: ISearchJSON = {
+         title: this.title,
+         main: this.main,
+         type: this.type,
+         year: this.year,
+         genres: this.genres,
+         hrefs: this.hrefs,
+         status: this.status,
+      };
+      return __s_r;
+   }
 }

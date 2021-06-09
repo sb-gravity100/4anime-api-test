@@ -32,5 +32,17 @@ class SearchResult extends Base_1.Base {
         };
         return __s_r;
     }
+    toJSON() {
+        const __s_r = {
+            title: this.title,
+            main: this.main,
+            type: this.type,
+            year: this.year,
+            genres: this.genres,
+            hrefs: this.hrefs,
+            status: this.status,
+        };
+        return __s_r;
+    }
 }
 exports.SearchResult = SearchResult;

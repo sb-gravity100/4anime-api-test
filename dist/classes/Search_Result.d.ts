@@ -20,4 +20,5 @@ export declare class SearchResult extends Base {
      */
     getAnime(options?: IEpisodeOptions): Promise<EpisodesData>;
     get(): ISearchJSON;
+    toJSON(): ISearchJSON;
 }

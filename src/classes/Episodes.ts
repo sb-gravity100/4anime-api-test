@@ -46,6 +46,10 @@ export class EpisodesData {
       return this._data;
    }
    get(): IAnimeDataJSON {
-      return this._props;
+      return { ...this._props };
+   }
+
+   toJSON(): IAnimeDataJSON {
+      return { ...this._props };
    }
 }
