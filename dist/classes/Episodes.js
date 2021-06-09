@@ -35,7 +35,7 @@ class EpisodesData {
     getEpisodes() {
         return this._data;
     }
-    toJSON() {
+    get() {
         return this._props;
     }
 }

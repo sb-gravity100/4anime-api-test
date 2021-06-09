@@ -1,20 +1,18 @@
 /// <reference types="node" />
-import { IEpisodeHrefs, IAnimeData, IAnimeEpisode, IEpisodeOptions, ISearchJSON, IAnimeOptions, IBase } from '../interfaces';
-import { HTMLElement } from 'node-html-parser';
+import { IEpisodeHrefs, IAnimeEpisode, IEpisodeOptions, ISearchJSON } from '../interfaces';
 import { EventEmitter } from 'events';
-export declare class Base extends EventEmitter implements IBase {
+import { EpisodesData } from './Episodes';
+export declare class Base extends EventEmitter {
     /**
      * @defaultValue false
      * @readonly
      */
     protected _catch: boolean;
-    constructor(options?: IAnimeOptions);
+    constructor();
     /** @protected */
-    protected episodes(anime: ISearchJSON, options?: IEpisodeOptions): Promise<IAnimeData>;
+    protected episodes(anime: ISearchJSON, options?: IEpisodeOptions): Promise<EpisodesData>;
     /** @protected */
     protected hrefsData(hrefs: IEpisodeHrefs[]): Promise<IAnimeEpisode[]>;
-    /** @protected */
-    protected _search(item: HTMLElement): Promise<ISearchJSON>;
     /**
      * @protected
      * @beta

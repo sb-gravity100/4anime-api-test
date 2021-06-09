@@ -1,9 +1,10 @@
-import { ISearchResult, IEpisodeHrefs, TAnimeType, TAnimeStatus, IEpisodeOptions, IAnimeData, ISearchJSON } from '../interfaces';
+import { IEpisodeHrefs, TAnimeType, TAnimeStatus, IEpisodeOptions, ISearchJSON } from '../interfaces';
 import { Base } from './Base';
+import { EpisodesData } from './Episodes';
 /**
  * A search result instance
  */
-export declare class SearchResult extends Base implements ISearchResult {
+export declare class SearchResult extends Base {
     readonly title: string;
     readonly main: string;
     readonly type: TAnimeType;
@@ -17,6 +18,6 @@ export declare class SearchResult extends Base implements ISearchResult {
      * @param {IEpisodeOptions} [options] - pass options.
      * @returns {Promise<IAnimeData>} a promise
      */
-    getAnime(options?: IEpisodeOptions): Promise<IAnimeData>;
-    toJSON(): ISearchJSON;
+    getAnime(options?: IEpisodeOptions): Promise<EpisodesData>;
+    get(): ISearchJSON;
 }

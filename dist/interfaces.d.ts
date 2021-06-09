@@ -4,25 +4,6 @@ export declare type TAnimeStatus = 'Completed' | 'Currently Airing' | string;
 export declare type TAnimeType = 'Movie' | 'TV Series' | 'OVA' | 'Special' | 'ONA' | string;
 export declare type TClassEvents = 'error' | 'loaded';
 export declare type TSearchProperties = 'title' | 'main' | 'type' | 'year' | 'genres' | 'href' | 'status';
-/** Search data */
-export interface ISearchResult {
-    /** Title of the anime. */
-    readonly title: string;
-    /** Main page. */
-    readonly main: string;
-    /** @see TAnimeType */
-    readonly type: TAnimeType;
-    /** Year aired. */
-    readonly year: string;
-    /** An array of genres. */
-    readonly genres: string[];
-    /** An array of episode links. */
-    readonly hrefs: IEpisodeHrefs[];
-    /** @see TAnimeStatus */
-    readonly status: TAnimeStatus;
-    getAnime(options?: IEpisodeOptions): Promise<IAnimeData | void>;
-    toJSON(): ISearchJSON;
-}
 export interface ISearchJSON {
     /** Title of the anime. */
     title: string;
@@ -76,23 +57,6 @@ export interface IAnimeDataJSON {
      */
     data: IAnimeEpisode[];
 }
-export interface IAnimeData {
-    getEpisodes(): IAnimeEpisode[];
-    toJSON(): IAnimeDataJSON;
-}
 export interface IEpisodeOptions {
     episodes?: string;
-}
-/** Instance options */
-export interface IAnimeOptions {
-    /**  Set to true if you want all errors to be thrown in a catch block. */
-    catch?: boolean;
-}
-/** Interface of the FourAnime class. */
-export interface I4Anime {
-    term(s: string): Promise<ISearchResult[]>;
-}
-export interface IBase {
-    on(event: string | symbol | TClassEvents, listener: (...args: any[]) => void): any;
-    once(event: string | symbol | TClassEvents, listener: (...args: any[]) => void): any;
 }
